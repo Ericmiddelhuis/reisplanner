@@ -1,0 +1,46 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--zand); color: var(--inkt);
+  font: 400 16px/1.5 var(--font-tekst);
+  min-height: 100vh;
+}
+h1, h2, h3 { font-family: var(--font-kop); font-weight: 600; line-height: 1.2; margin: 0 0 .5rem; }
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.25rem; }
+p { margin: 0 0 .75rem; }
+a { color: var(--groen); }
+:focus-visible { outline: 3px solid var(--oker); outline-offset: 2px; }
+.gedempt { color: var(--gedempt); }
+.verborgen { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* App-indeling: telefoon = onderbalk, laptop (vanaf 900px) = zijbalk */
+#app { min-height: 100vh; }
+#hoofd { padding: 20px 16px 96px; max-width: 900px; margin: 0 auto; }
+#navigatie {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  display: flex; background: var(--kaart); border-top: 1px solid var(--rand);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+#navigatie .merk { display: none; }
+#navigatie a {
+  flex: 1; min-height: 56px; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 2px; font-size: .75rem; font-weight: 500;
+  color: var(--gedempt); text-decoration: none;
+}
+#navigatie a[aria-current="page"] { color: var(--groen); font-weight: 600; }
+#navigatie svg { width: 24px; height: 24px; }
+
+@media (min-width: 900px) {
+  #app { display: grid; grid-template-columns: 240px 1fr; }
+  #navigatie {
+    position: sticky; top: 0; height: 100vh; flex-direction: column; justify-content: flex-start;
+    gap: 4px; padding: 24px 12px; border-top: 0; border-right: 1px solid var(--rand);
+  }
+  #navigatie .merk { display: block; font: 600 1.25rem var(--font-kop); color: var(--groen); padding: 0 12px 16px; }
+  #navigatie a { flex: none; flex-direction: row; justify-content: flex-start; gap: 12px;
+    font-size: 1rem; padding: 0 12px; border-radius: 12px; min-height: 48px; }
+  #navigatie a[aria-current="page"] { background: var(--groen-licht); }
+  #hoofd { padding: 32px 32px 48px; max-width: 1100px; margin: 0; }
+}

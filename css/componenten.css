@@ -1,0 +1,19 @@
+.kaart { background: var(--kaart); border: 1px solid var(--rand); border-radius: var(--radius);
+  padding: 18px; margin-bottom: 16px; }
+.knop { min-height: 44px; padding: 0 20px; border-radius: 12px; border: 1px solid var(--groen);
+  background: var(--groen); color: #fff; font: 600 1rem var(--font-tekst); cursor: pointer; }
+.knop.licht { background: var(--kaart); color: var(--groen); }
+.knop:disabled { opacity: .6; cursor: default; }
+label { display: block; font-weight: 500; margin-bottom: 4px; }
+input, textarea, select {
+  width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--rand);
+  border-radius: 12px; background: #fff; color: var(--inkt); font: inherit; margin-bottom: 12px;
+}
+.rij { display: flex; gap: 12px; flex-wrap: wrap; align-items: end; }
+.rij > * { flex: 1 1 200px; }
+.melding { padding: 10px 14px; border-radius: 12px; background: var(--groen-licht); margin-bottom: 12px; }
+.melding.fout { background: var(--oker-licht); color: var(--oker-tekst); }
+.countdown { font: 600 3rem var(--font-kop); color: var(--groen); line-height: 1; }
+.login { max-width: 420px; margin: 12vh auto; padding: 0 16px; }
+.lijst { list-style: none; padding: 0; margin: 0 0 12px; }
+.lijst li { padding: 8px 0; border-bottom: 1px solid var(--rand); }

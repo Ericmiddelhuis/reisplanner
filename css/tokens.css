@@ -1,0 +1,16 @@
+:root {
+  --zand: #F4EFE4;
+  --kaart: #FFFDF8;
+  --rand: #E3DACA;
+  --inkt: #2B2A22;
+  --gedempt: #6B6656;
+  --groen: #3F5A3A;
+  --groen-licht: #E4EADF;
+  --oker: #A8611E;
+  --oker-licht: #F6E7D2;
+  --oker-tekst: #7A4210;
+  --gepland: #C9A56E;
+  --radius: 18px;
+  --font-kop: 'Fraunces', Georgia, serif;
+  --font-tekst: 'Work Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
