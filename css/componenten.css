@@ -53,3 +53,24 @@ input, textarea, select {
   .weekchips { flex-wrap: wrap; }
   .dagen-layout .terug { display: none; }
 }
+
+/* Route */
+.route-layout { display: grid; gap: 16px; }
+#kaart { height: 340px; border-radius: var(--radius); border: 1px solid var(--rand); margin-bottom: 12px; z-index: 0; }
+#kaart.kiezen { cursor: crosshair; }
+.pin { background: var(--groen); border: 3px solid #fff; border-radius: 50%; box-shadow: 0 1px 4px rgba(0, 0, 0, .5); }
+.popup { display: grid; gap: 6px; min-width: 160px; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.zoekrij > input { margin-bottom: 0; }
+.zoekrij { align-items: center; margin-bottom: 8px; }
+.resultaat { width: 100%; min-height: 44px; text-align: left; padding: 8px 12px; border: 1px solid var(--rand);
+  border-radius: 12px; background: #fff; font: inherit; color: var(--inkt); cursor: pointer; }
+.vinkje { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.vinkje input { width: 24px; min-height: 24px; height: 24px; margin: 0; }
+.vinkje label { margin: 0; }
+.melding ul { margin: 6px 0 0; padding-left: 20px; }
+@media (min-width: 900px) {
+  .route-layout { grid-template-columns: 1fr 400px; align-items: start; }
+  .kaartkolom { position: sticky; top: 16px; }
+  #kaart { height: calc(100vh - 160px); min-height: 420px; }
+}

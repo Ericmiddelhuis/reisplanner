@@ -11,6 +11,7 @@ export async function toonMeer(el, staat) {
       <div class="rij">
         <div><label for="naam">Naam</label><input id="naam"></div>
         <div><label for="start">Startdatum</label><input id="start" type="date"></div>
+        <div><label for="maxrij">Max. rijuren per dag</label><input id="maxrij" type="number" min="1" max="14" step="0.5"></div>
       </div>
       <button class="knop" id="bewaar" type="button">Opslaan</button>
     </div>
@@ -34,8 +35,10 @@ export async function toonMeer(el, staat) {
 
   $('#naam').value = reis.naam;
   $('#start').value = reis.startdatum || '';
+  $('#maxrij').value = reis.max_rijuren_per_dag ?? 4;
   $('#bewaar').onclick = async () => {
-    try { await bewaarReis(reis.id, { naam: $('#naam').value, startdatum: $('#start').value || null });
+    try { await bewaarReis(reis.id, { naam: $('#naam').value, startdatum: $('#start').value || null,
+      max_rijuren_per_dag: Number($('#maxrij').value) || 4 });
       meld('Opgeslagen.'); } catch (e) { meld(e.message, true); }
   };
 

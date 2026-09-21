@@ -114,6 +114,9 @@ create table if not exists legs (
   updated_by uuid references auth.users(id)
 );
 
+-- Stap 3: opgeslagen routelijn (encoded polyline) van OpenRouteService, zodat we niet opnieuw hoeven op te vragen
+alter table legs add column if not exists geometrie text;
+
 create table if not exists expenses (
   id uuid primary key default gen_random_uuid(),
   trip_id uuid not null references trips(id) on delete cascade,

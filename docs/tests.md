@@ -39,3 +39,26 @@ Afvinken na handmatig testen met de echte Supabase en (waar genoemd) op GitHub P
 - [x] Tijdens typen wordt het scherm niet overschreven door een wijziging van de ander.
 - [x] Dag verwijderen op de telefoon en terug naar de lijst.
 - [x] Plaats aanmaken vanuit een activiteit en vanuit de overnachting.
+
+## Stap 3 – Route met kaart
+
+Eenmalig eerst `supabase/stap3.sql` uitvoeren in de Supabase SQL-editor (kolom `legs.geometrie`).
+
+### Automatisch (Playwright, geslaagd; `tests/route.spec.js`)
+- [x] Routelijn (encoded polyline) wordt goed gedecodeerd.
+- [x] Kaart toont een pin per plaats met locatie; plaatsen zonder locatie worden gemarkeerd.
+- [x] "Etappes maken uit overnachtingen" maakt etappes, berekent afstand/rijtijd/routelijn en slaat ze op.
+- [x] Wegtype zet de standaard correctiefactor; gecorrigeerde rijtijd wordt getoond; grensovergang wordt gemarkeerd.
+- [x] Waarschuwing bij meer rijuren dan het maximum, en bij rijden na zonsondergang; geen waarschuwing als het past.
+- [x] Plaats zoeken via OpenStreetMap vult naam, land en coördinaten in; plaats op de kaart kiezen vult coördinaten voor.
+- [x] Telefoon: geen horizontaal scrollen.
+
+### Handmatig (echte Supabase en OpenRouteService)
+- [ ] `stap3.sql` foutloos uitgevoerd.
+- [ ] Kaart laadt op Pages en op de telefoon, met OpenStreetMap-tegels en attributie.
+- [ ] Plaatsen zoeken (bijv. Sesriem, Etosha, Kasane) geeft bruikbare resultaten.
+- [ ] Bij Dagen overnachtingen kiezen, dan bij Route "Etappes maken uit overnachtingen": afstanden en routelijnen verschijnen.
+- [ ] Routes staan er na herladen nog (uit de database, niet opnieuw opgevraagd).
+- [ ] Marker verslepen slaat de nieuwe plek op en berekent de routes opnieuw.
+- [ ] Max. rijuren per dag aanpassen bij Meer verandert de waarschuwingen.
+- [ ] Wijziging van Eric (plaats/etappe) verschijnt zonder herladen bij Ilse.

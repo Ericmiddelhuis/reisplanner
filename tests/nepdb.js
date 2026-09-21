@@ -3,10 +3,10 @@ import { randomUUID } from 'node:crypto';
 
 export const REF = 'ewbhlxqgdgzrsbytuwtk';
 export const REIS = { id: '11111111-1111-1111-1111-111111111111', naam: 'Testreis', startdatum: '2027-07-10',
-  einddatum: null, notitie: null, created_at: '2027-01-01T00:00:00Z' };
+  einddatum: null, notitie: null, max_rijuren_per_dag: 4, created_at: '2027-01-01T00:00:00Z' };
 
 export async function nepSupabase(page, begin = {}) {
-  const db = { days: [], places: [], activities: [], bookings: [], ...begin };
+  const db = { days: [], places: [], activities: [], bookings: [], legs: [], ...begin };
   const sessie = { access_token: 'x', refresh_token: 'x', token_type: 'bearer', expires_in: 3600,
     expires_at: Math.floor(Date.now() / 1000) + 3600,
     user: { id: '22222222-2222-2222-2222-222222222222', email: 'test@example.com', aud: 'authenticated' } };

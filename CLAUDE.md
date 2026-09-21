@@ -146,3 +146,4 @@ Sla geen paspoort-, visum- of creditcardnummers op in de database. Alleen type, 
 - Stap 0: klaar
 - Stap 1: klaar
 - Stap 2: klaar
+- Stap 3: gebouwd en automatisch getest; handmatige test nog te doen (eerst supabase/stap3.sql uitvoeren, zie docs/tests.md)

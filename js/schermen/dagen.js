@@ -1,12 +1,11 @@
 // Dagplanning: week-chips, daglijst en dagdetails (overnachting, activiteiten per dagdeel)
 import { lijst, voegToe, voegMeerToe, wijzig, verwijder, bewaarReis } from '../db.js';
 import { maak, dagTekst, datumVoor, geld } from '../util.js';
+import { opendialoog as opendlg, veld, plaatsDialoog } from '../dialogen.js';
 
 const AANTAL_DAGEN = 28;
 const DAGDELEN = [['ochtend', 'Ochtend'], ['middag', 'Middag'], ['avond', 'Avond']];
 const STATUSSEN = ['idee', 'nog boeken', 'geboekt', 'betaald'];
-const PLAATSTYPEN = [['stad', 'Stad'], ['park', 'Park'], ['camping', 'Camping'], ['lodge', 'Lodge'],
-  ['grenspost', 'Grenspost'], ['tankstation', 'Tankstation']];
 
 export async function toonDagen(el, staat) {
   let d = { dagen: [], plaatsen: [], activiteiten: [], boekingen: [] };
@@ -247,40 +246,13 @@ export async function toonDagen(el, staat) {
   }
 
   // ---------- dialogen ----------
-  function opendialoog(titel, formulier) {
-    const dlg = maak('dialog', { class: 'dialoog', 'aria-label': titel }, maak('h2', {}, titel), formulier);
-    dlg.addEventListener('close', () => dlg.remove());
-    el.append(dlg);
-    dlg.showModal();
-    return dlg;
-  }
-
-  function veld(id, label, invoer) { return maak('div', {}, maak('label', { for: id }, label), invoer); }
+  const opendialoog = (titel, formulier) => opendlg(el, titel, formulier);
 
   function vraagPlaats(naDoor) {
-    const fout = maak('p', { class: 'melding fout verborgen', role: 'alert' });
-    const naam = maak('input', { id: 'pl-naam', required: true });
-    const land = maak('select', { id: 'pl-land' }, maak('option', { value: '' }, '—'),
-      maak('option', { value: 'NA' }, 'Namibië'), maak('option', { value: 'BW' }, 'Botswana'));
-    const type = maak('select', { id: 'pl-type' }, maak('option', { value: '' }, '—'),
-      PLAATSTYPEN.map(([w, t]) => maak('option', { value: w }, t)));
-    const notitie = maak('textarea', { id: 'pl-notitie', rows: '2' });
-    let dlg;
-    const form = maak('form', { method: 'dialog', onsubmit: async (ev) => {
-      ev.preventDefault();
-      try {
-        const p = await voegToe('places', { trip_id: tripId(), naam: naam.value.trim(), land: land.value || null,
-          type: type.value || null, notitie: notitie.value.trim() || null });
-        d.plaatsen.push(p); d.plaatsen.sort((a, b) => a.naam.localeCompare(b.naam));
-        dlg.close(); naDoor(p);
-      } catch (e) { fout.textContent = e.message; fout.classList.remove('verborgen'); }
-    } },
-      veld('pl-naam', 'Naam', naam), veld('pl-land', 'Land', land), veld('pl-type', 'Soort plaats', type),
-      veld('pl-notitie', 'Notitie', notitie), fout,
-      maak('div', { class: 'knoppen' },
-        maak('button', { type: 'submit', class: 'knop' }, 'Opslaan'),
-        maak('button', { type: 'button', class: 'knop licht', onclick: () => dlg.close() }, 'Annuleren')));
-    dlg = opendialoog('Nieuwe plaats', form);
+    plaatsDialoog({ ouder: el, tripId: tripId(), naOpslaan: (p) => {
+      d.plaatsen.push(p); d.plaatsen.sort((x, y) => x.naam.localeCompare(y.naam));
+      naDoor(p);
+    } });
   }
 
   function vraagActiviteit(dag, activiteit, dagdeel = 'ochtend') {
