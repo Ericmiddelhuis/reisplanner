@@ -1,0 +1,7 @@
+{
+  "name": "reisplanner",
+  "private": true,
+  "description": "Alleen voor tests: de app zelf heeft geen npm nodig.",
+  "scripts": { "test": "playwright test" },
+  "devDependencies": { "@playwright/test": "^1.50.0" }
+}
