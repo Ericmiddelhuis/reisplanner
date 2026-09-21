@@ -57,8 +57,9 @@ test('titel, plaats, overnachting en boekingsstatus', async ({ page }) => {
   await dlg.getByLabel('Land').selectOption('NA');
   await dlg.getByLabel('Soort plaats').selectOption('camping');
   await dlg.getByRole('button', { name: 'Opslaan' }).click();
+  await expect.poll(() => db.places.length).toBe(1);
   await expect(page.getByLabel('Overnachting', { exact: true })).toHaveValue(db.places[0].id);
-  expect(db.days[0].overnachting_place_id).toBe(db.places[0].id);
+  await expect.poll(() => db.days[0].overnachting_place_id).toBe(db.places[0].id);
 
   await page.getByLabel('Boekingsstatus overnachting').selectOption('geboekt');
   await expect.poll(() => db.bookings.length).toBe(1);
