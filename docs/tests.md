@@ -54,11 +54,11 @@ Eenmalig eerst `supabase/stap3.sql` uitvoeren in de Supabase SQL-editor (kolom `
 - [x] Telefoon: geen horizontaal scrollen.
 
 ### Handmatig (echte Supabase en OpenRouteService)
-- [ ] `stap3.sql` foutloos uitgevoerd.
-- [ ] Kaart laadt op Pages en op de telefoon, met OpenStreetMap-tegels en attributie.
-- [ ] Plaatsen zoeken (bijv. Sesriem, Etosha, Kasane) geeft bruikbare resultaten.
-- [ ] Bij Dagen overnachtingen kiezen, dan bij Route "Etappes maken uit overnachtingen": afstanden en routelijnen verschijnen.
-- [ ] Routes staan er na herladen nog (uit de database, niet opnieuw opgevraagd).
-- [ ] Marker verslepen slaat de nieuwe plek op en berekent de routes opnieuw.
-- [ ] Max. rijuren per dag aanpassen bij Meer verandert de waarschuwingen.
-- [ ] Wijziging van Eric (plaats/etappe) verschijnt zonder herladen bij Ilse.
+- [x] `stap3.sql` foutloos uitgevoerd.
+- [x] Kaart laadt op Pages en op de telefoon, met OpenStreetMap-tegels en attributie.
+- [x] Plaatsen zoeken (bijv. Sesriem, Etosha, Kasane) geeft bruikbare resultaten.
+- [x] Bij Dagen overnachtingen kiezen, dan bij Route "Etappes maken uit overnachtingen": afstanden en routelijnen verschijnen.
+- [x] Routes staan er na herladen nog (uit de database, niet opnieuw opgevraagd).
+- [x] Marker verslepen slaat de nieuwe plek op en berekent de routes opnieuw.
+- [x] Max. rijuren per dag aanpassen bij Meer verandert de waarschuwingen.
+- [x] Wijziging van Eric (plaats/etappe) verschijnt zonder herladen bij Ilse.
