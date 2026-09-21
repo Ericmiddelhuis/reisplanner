@@ -71,3 +71,44 @@ export async function importeerAlles(tripId, bestand) {
     await bewaarReis(tripId, velden);
   }
 }
+
+// ---------------------------------------------------------------
+// Algemene hulpfuncties voor de tabellen van een reis
+// ---------------------------------------------------------------
+export async function lijst(tabel, tripId, sorteer = 'created_at') {
+  const { data, error } = await supabase.from(tabel).select('*').eq('trip_id', tripId).order(sorteer);
+  if (error) throw error;
+  return data;
+}
+
+export async function voegToe(tabel, rij) {
+  const { data, error } = await supabase.from(tabel).insert(rij).select().single();
+  if (error) throw error;
+  return data;
+}
+
+// Bij ignoreDuplicates worden bestaande rijen (zelfde onConflict-kolommen) overgeslagen
+export async function voegMeerToe(tabel, rijen, { onConflict, ignoreDuplicates } = {}) {
+  const { error } = await supabase.from(tabel).upsert(rijen, { onConflict, ignoreDuplicates });
+  if (error) throw error;
+}
+
+export async function wijzig(tabel, id, velden) {
+  const { error } = await supabase.from(tabel).update(velden).eq('id', id);
+  if (error) throw error;
+}
+
+export async function verwijder(tabel, id) {
+  const { error } = await supabase.from(tabel).delete().eq('id', id);
+  if (error) throw error;
+}
+
+// Realtime: roept terugbel aan bij elke wijziging in een van de tabellen.
+// Zonder filter, want verwijderingen bevatten alleen de id; RLS bepaalt wat je krijgt.
+export function volgTabellen(tabellen, terugbel) {
+  const kanaal = supabase.channel('tabellen');
+  for (const t of tabellen) {
+    kanaal.on('postgres_changes', { event: '*', schema: 'public', table: t }, () => terugbel(t));
+  }
+  return kanaal.subscribe();
+}

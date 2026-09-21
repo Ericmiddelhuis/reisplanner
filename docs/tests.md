@@ -22,3 +22,20 @@ Afvinken na handmatig testen met de echte Supabase en (waar genoemd) op GitHub P
 - [x] Export geeft een JSON-bestand; import van dat bestand werkt.
 - [x] Een niet-lid (ander e-mailadres) ziet geen reis en krijgt de "Nieuwe reis"-pagina.
 - [x] Layout op een echte telefoon en op laptop gecontroleerd.
+
+## Stap 2 – Dagplanning
+
+### Automatisch (Playwright, geslaagd; `tests/dagen.spec.js`)
+- [x] Bij het eerste bezoek worden 28 dagen aangemaakt, met datums vanaf de startdatum; einddatum volgt de laatste dag.
+- [x] Dag toevoegen aan het einde; dag verwijderen (ook halverwege: latere dagen schuiven op en krijgen nieuwe datums).
+- [x] Titel bewerken; plaats aanmaken en kiezen als overnachting; boekingsstatus instellen en weer wissen.
+- [x] Activiteit per dagdeel toevoegen, bewerken (ander dagdeel) en verwijderen; kosten en minimumleeftijd zichtbaar.
+- [x] Telefoon: lijst, dan detail met terugknop. Laptop: lijst en details naast elkaar.
+
+### Handmatig (echte Supabase, op Pages en telefoon)
+- [ ] Eerste keer Dagen openen maakt precies 28 dagen (ook als Eric en Ilse tegelijk openen: geen dubbele dagen).
+- [ ] Startdatum wijzigen bij Meer: datums bij Dagen lopen mee.
+- [ ] Wijziging van Eric (titel, overnachting, activiteit) verschijnt zonder herladen bij Ilse.
+- [ ] Tijdens typen wordt het scherm niet overschreven door een wijziging van de ander.
+- [ ] Dag verwijderen op de telefoon en terug naar de lijst.
+- [ ] Plaats aanmaken vanuit een activiteit en vanuit de overnachting.

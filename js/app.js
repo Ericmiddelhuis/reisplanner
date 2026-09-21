@@ -1,6 +1,6 @@
 // Startpunt: sessie controleren, reis laden, schermen tonen
 import { huidigeSessie, stuurMagicLink, claimUitnodigingen } from './auth.js';
-import { laadReizen, maakReis, volgReis } from './db.js';
+import { laadReizen, maakReis, volgReis, volgTabellen } from './db.js';
 import { ROUTES, startRouter } from './router.js';
 import { iconen } from './icons.js';
 import { toonOverzicht, bijReisWijziging } from './schermen/overzicht.js';
@@ -10,7 +10,7 @@ import { toonBudget } from './schermen/budget.js';
 import { toonMeer } from './schermen/meer.js';
 
 const SCHERMEN = { overzicht: toonOverzicht, dagen: toonDagen, route: toonRoute, budget: toonBudget, meer: toonMeer };
-const staat = { reis: null, pad: 'overzicht' };
+const staat = { reis: null, pad: 'overzicht', opWijziging: null };
 const root = document.getElementById('root');
 
 function toonLogin() {
@@ -74,6 +74,7 @@ function bouwApp() {
 
 function toonScherm(pad) {
   staat.pad = pad;
+  staat.opWijziging = null;   // het vorige scherm luistert niet meer mee
   for (const a of root.querySelectorAll('#navigatie a')) {
     if (a.dataset.pad === pad) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   }
@@ -93,6 +94,7 @@ async function start() {
     staat.reis = nieuw;
     if (staat.pad === 'overzicht') bijReisWijziging(root.querySelector('#hoofd'), nieuw);
   });
+  volgTabellen(['days', 'places', 'activities', 'bookings'], () => staat.opWijziging?.());
   startRouter(toonScherm);
 }
 

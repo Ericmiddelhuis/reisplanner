@@ -17,3 +17,39 @@ input, textarea, select {
 .login { max-width: 420px; margin: 12vh auto; padding: 0 16px; }
 .lijst { list-style: none; padding: 0; margin: 0 0 12px; }
 .lijst li { padding: 8px 0; border-bottom: 1px solid var(--rand); }
+
+/* Dagen */
+.weekchips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 12px; }
+.chip { min-height: 44px; padding: 0 16px; border-radius: 22px; border: 1px solid var(--rand);
+  background: var(--kaart); color: var(--inkt); font: 500 .9rem var(--font-tekst); cursor: pointer; white-space: nowrap; }
+.chip[aria-pressed="true"] { background: var(--groen); border-color: var(--groen); color: #fff; }
+.daglijst { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 8px; }
+.dag, .activiteit { width: 100%; min-height: 56px; display: flex; gap: 12px; align-items: center; text-align: left;
+  padding: 10px 14px; background: var(--kaart); border: 1px solid var(--rand); border-radius: 14px;
+  font: inherit; color: var(--inkt); cursor: pointer; }
+.dag[aria-current="true"] { border-color: var(--groen); background: var(--groen-licht); }
+.dag-nr { font: 600 1.25rem var(--font-kop); color: var(--groen); min-width: 2ch; text-align: center; }
+.dag-tekst { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.activiteit { flex-direction: column; align-items: flex-start; gap: 2px; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: .8rem; font-weight: 600;
+  background: var(--rand); color: var(--inkt); white-space: nowrap; }
+.badge.nog-boeken { background: var(--oker-licht); color: var(--oker-tekst); }
+.badge.geboekt { background: var(--groen-licht); color: var(--groen); }
+.badge.betaald { background: var(--groen); color: #fff; }
+.knop.gevaar { color: var(--oker-tekst); border-color: var(--oker); }
+.knoppen { display: flex; gap: 12px; flex-wrap: wrap; }
+.dialoog { border: 1px solid var(--rand); border-radius: var(--radius); background: var(--kaart); color: var(--inkt);
+  padding: 20px; width: min(520px, calc(100vw - 32px)); max-height: 90vh; }
+.dialoog::backdrop { background: rgba(43, 42, 34, .5); }
+.dagen-layout { display: grid; gap: 16px; }
+.dagen-layout .terug { margin-bottom: 12px; }
+@media (max-width: 899px) {
+  .dagen-layout > #dagdetail { display: none; }
+  .dagen-layout.detail-open > #dagdetail { display: block; }
+  .dagen-layout.detail-open > #daglijstkolom { display: none; }
+}
+@media (min-width: 900px) {
+  .dagen-layout { grid-template-columns: 340px 1fr; align-items: start; }
+  .weekchips { flex-wrap: wrap; }
+  .dagen-layout .terug { display: none; }
+}

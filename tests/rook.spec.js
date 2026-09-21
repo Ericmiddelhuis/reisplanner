@@ -1,20 +1,12 @@
 // Rooktests: de app laadt en de navigatie werkt op telefoon- en laptopbreedte.
 // Supabase wordt nagebootst, zodat de tests geen echte login of data nodig hebben.
 import { test, expect } from '@playwright/test';
-
-const REF = 'ewbhlxqgdgzrsbytuwtk';
-const REIS = { id: '11111111-1111-1111-1111-111111111111', naam: 'Testreis', startdatum: '2099-01-10',
-  notitie: 'Hallo Ilse', created_at: '2027-01-01T00:00:00Z' };
+import { nepSupabase, REIS } from './nepdb.js';
 
 async function metNepSessie(page) {
-  const sessie = { access_token: 'x', refresh_token: 'x', token_type: 'bearer', expires_in: 3600,
-    expires_at: Math.floor(Date.now() / 1000) + 3600,
-    user: { id: '22222222-2222-2222-2222-222222222222', email: 'test@example.com', aud: 'authenticated' } };
-  await page.addInitScript(([k, v]) => localStorage.setItem(k, v), [`sb-${REF}-auth-token`, JSON.stringify(sessie)]);
-  await page.route(`https://${REF}.supabase.co/rest/v1/rpc/**`, (r) => r.fulfill({ status: 200, json: null }));
-  await page.route(`https://${REF}.supabase.co/rest/v1/trips**`, (r) => r.fulfill({ json: [REIS] }));
-  await page.route(`https://${REF}.supabase.co/rest/v1/trip_members**`, (r) => r.fulfill({ json: [] }));
-  await page.routeWebSocket(/realtime/, () => {});  // Realtime negeren
+  REIS.startdatum = '2099-01-10';
+  REIS.notitie = 'Hallo Ilse';
+  await nepSupabase(page);
 }
 
 test('zonder sessie zie je het inlogscherm', async ({ page }) => {
