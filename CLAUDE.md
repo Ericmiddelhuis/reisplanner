@@ -129,19 +129,19 @@ Sla geen paspoort-, visum- of creditcardnummers op in de database. Alleen type, 
 
 ## Stap 1 – acceptatiecriteria
 
-- [ ] `supabase/schema.sql` en `supabase/policies.sql` maken alle tabellen met RLS aan; uitvoerbaar in de Supabase SQL-editor.
-- [ ] Inloggen met magic link werkt, lokaal en op GitHub Pages. Uitloggen werkt.
-- [ ] Na eerste login: een reis aanmaken en een tweede persoon uitnodigen via e-mail.
-- [ ] Navigatie tussen de vijf onderdelen werkt (hash-router), met lege schermen die al de juiste kop en layout hebben.
-- [ ] Telefoonlayout met onderste navigatiebalk, laptoplayout (vanaf ± 900px) met zijbalk.
-- [ ] Overzicht toont de reisnaam en een werkende countdown op basis van de startdatum.
-- [ ] Een test-notitie die Eric opslaat, verschijnt zonder herladen bij Ilse (Realtime).
-- [ ] Export van alle reisdata naar een JSON-bestand en import daarvan werkt.
-- [ ] Een gebruiker die geen lid is, ziet niets van de reis (RLS gecontroleerd).
-- [ ] Playwright-rooktest: app laadt, navigatie werkt op telefoon- en laptopbreedte.
-- [ ] `docs/tests.md` bevat de handmatige checklist voor stap 1, afgevinkt.
+- [x] `supabase/schema.sql` en `supabase/policies.sql` maken alle tabellen met RLS aan; uitvoerbaar in de Supabase SQL-editor.
+- [x] Inloggen met magic link werkt, lokaal en op GitHub Pages. Uitloggen werkt.
+- [x] Na eerste login: een reis aanmaken en een tweede persoon uitnodigen via e-mail.
+- [x] Navigatie tussen de vijf onderdelen werkt (hash-router), met lege schermen die al de juiste kop en layout hebben.
+- [x] Telefoonlayout met onderste navigatiebalk, laptoplayout (vanaf ± 900px) met zijbalk.
+- [x] Overzicht toont de reisnaam en een werkende countdown op basis van de startdatum.
+- [x] Een test-notitie die Eric opslaat, verschijnt zonder herladen bij Ilse (Realtime).
+- [x] Export van alle reisdata naar een JSON-bestand en import daarvan werkt.
+- [x] Een gebruiker die geen lid is, ziet niets van de reis (RLS gecontroleerd).
+- [x] Playwright-rooktest: app laadt, navigatie werkt op telefoon- en laptopbreedte.
+- [x] `docs/tests.md` bevat de handmatige checklist voor stap 1, afgevinkt.
 
 ## Status
 
 - Stap 0: klaar
-- Stap 1: nog niet gestart
+- Stap 1: klaar
