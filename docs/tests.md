@@ -33,9 +33,9 @@ Afvinken na handmatig testen met de echte Supabase en (waar genoemd) op GitHub P
 - [x] Telefoon: lijst, dan detail met terugknop. Laptop: lijst en details naast elkaar.
 
 ### Handmatig (echte Supabase, op Pages en telefoon)
-- [ ] Eerste keer Dagen openen maakt precies 28 dagen (ook als Eric en Ilse tegelijk openen: geen dubbele dagen).
-- [ ] Startdatum wijzigen bij Meer: datums bij Dagen lopen mee.
-- [ ] Wijziging van Eric (titel, overnachting, activiteit) verschijnt zonder herladen bij Ilse.
-- [ ] Tijdens typen wordt het scherm niet overschreven door een wijziging van de ander.
-- [ ] Dag verwijderen op de telefoon en terug naar de lijst.
-- [ ] Plaats aanmaken vanuit een activiteit en vanuit de overnachting.
+- [x] Eerste keer Dagen openen maakt precies 28 dagen (ook als Eric en Ilse tegelijk openen: geen dubbele dagen).
+- [x] Startdatum wijzigen bij Meer: datums bij Dagen lopen mee.
+- [x] Wijziging van Eric (titel, overnachting, activiteit) verschijnt zonder herladen bij Ilse.
+- [x] Tijdens typen wordt het scherm niet overschreven door een wijziging van de ander.
+- [x] Dag verwijderen op de telefoon en terug naar de lijst.
+- [x] Plaats aanmaken vanuit een activiteit en vanuit de overnachting.
