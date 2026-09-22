@@ -2,8 +2,6 @@
 import { test, expect } from '@playwright/test';
 import { nepSupabase, REIS } from './nepdb.js';
 
-test.beforeEach(() => { REIS.startdatum = '2027-07-10'; REIS.einddatum = null; });
-
 async function opDagen(page, breedte = 1280) {
   await page.setViewportSize({ width: breedte, height: 900 });
   const db = await nepSupabase(page);

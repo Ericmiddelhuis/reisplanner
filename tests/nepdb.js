@@ -2,12 +2,16 @@
 import { randomUUID } from 'node:crypto';
 
 export const REF = 'ewbhlxqgdgzrsbytuwtk';
-export const REIS = { id: '11111111-1111-1111-1111-111111111111', naam: 'Testreis', startdatum: '2027-07-10',
+const BASIS_REIS = { id: '11111111-1111-1111-1111-111111111111', naam: 'Testreis', startdatum: '2027-07-10',
   einddatum: null, notitie: null, max_rijuren_per_dag: 4, totaalbudget: null,
   koersen: { EUR: 1, NAD: 0.05, BWP: 0.07 }, created_at: '2027-01-01T00:00:00Z' };
+// REIS is één module-singleton die alle testbestanden in dezelfde worker delen. Zonder reset lekt een wijziging
+// (bijv. een test die de reisnaam opslaat) door naar een test in een ander bestand die daarna toevallig draait.
+export const REIS = { ...BASIS_REIS };
 
 export async function nepSupabase(page, begin = {}) {
-  const db = { days: [], places: [], activities: [], bookings: [], legs: [], expenses: [], budgetten: [], tasks: [], ...begin };
+  Object.assign(REIS, BASIS_REIS, { koersen: { ...BASIS_REIS.koersen } });
+  const db = { days: [], places: [], activities: [], bookings: [], legs: [], expenses: [], budgetten: [], tasks: [], links: [], ...begin };
   const sessie = { access_token: 'x', refresh_token: 'x', token_type: 'bearer', expires_in: 3600,
     expires_at: Math.floor(Date.now() / 1000) + 3600,
     user: { id: '22222222-2222-2222-2222-222222222222', email: 'test@example.com', aud: 'authenticated' } };

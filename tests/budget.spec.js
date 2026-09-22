@@ -2,11 +2,6 @@
 import { test, expect } from '@playwright/test';
 import { nepSupabase, REIS } from './nepdb.js';
 
-test.beforeEach(() => {
-  REIS.totaalbudget = null;
-  REIS.koersen = { EUR: 1, NAD: 0.05, BWP: 0.07 };
-});
-
 async function opBudget(page, begin = {}) {
   await page.setViewportSize({ width: 1280, height: 900 });
   const db = await nepSupabase(page, begin);

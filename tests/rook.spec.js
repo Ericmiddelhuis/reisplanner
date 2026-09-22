@@ -4,9 +4,9 @@ import { test, expect } from '@playwright/test';
 import { nepSupabase, REIS } from './nepdb.js';
 
 async function metNepSessie(page) {
+  await nepSupabase(page);   // reset REIS naar de standaardwaarden, dus pas daarna aanpassen
   REIS.startdatum = '2099-01-10';
   REIS.notitie = 'Hallo Ilse';
-  await nepSupabase(page);
 }
 
 test('zonder sessie zie je het inlogscherm', async ({ page }) => {

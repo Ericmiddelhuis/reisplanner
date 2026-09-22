@@ -9,8 +9,6 @@ const SESRIEM = { id: 'p2', trip_id: REIS.id, naam: 'Sesriem', land: 'NA', type:
 const dagen = [1, 2, 3].map((n) => ({ id: 'd' + n, trip_id: REIS.id, dagnummer: n, datum: `2027-07-${9 + n}`, titel: null,
   overnachting_place_id: n === 1 ? 'p1' : n === 2 ? 'p2' : 'p2' }));
 
-test.beforeEach(() => { REIS.startdatum = '2027-07-10'; REIS.max_rijuren_per_dag = 4; });
-
 async function metRoute(page, begin) {
   await page.setViewportSize({ width: 1280, height: 900 });
   const db = await nepSupabase(page, begin);

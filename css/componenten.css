@@ -96,3 +96,9 @@ input, textarea, select {
   min-height: 44px; padding: 8px 14px; background: var(--kaart); border: 1px solid var(--rand); border-radius: 14px;
   font: inherit; color: var(--inkt); cursor: pointer; }
 .doorgestreept { text-decoration: line-through; color: var(--gedempt); }
+
+/* Links (Meer) */
+.link-regel { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.link-titel { flex: 1; display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: var(--inkt);
+  min-height: 44px; padding: 8px 14px; background: var(--kaart); border: 1px solid var(--rand); border-radius: 14px; }
+.link-titel strong { color: var(--groen); word-break: break-word; }

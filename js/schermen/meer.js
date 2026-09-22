@@ -3,6 +3,7 @@ import { laadLeden, nodigUit, exporteerAlles, importeerAlles, bewaarReis } from 
 import { uitloggen } from '../auth.js';
 import { maak } from '../util.js';
 import { veld } from '../dialogen.js';
+import { initLinks } from './links.js';
 
 export async function toonMeer(el, staat) {
   const reis = staat.reis;
@@ -10,9 +11,10 @@ export async function toonMeer(el, staat) {
 
   const status = maak('p', { class: 'melding verborgen', role: 'status' });
   const instellingenKaart = maak('div', { class: 'kaart' });
+  const linksKaart = maak('div', { class: 'kaart' });
   const ledenKaart = maak('div', { class: 'kaart' });
   const backupKaart = maak('div', { class: 'kaart' });
-  el.replaceChildren(maak('h1', {}, 'Meer'), status, instellingenKaart, ledenKaart, backupKaart,
+  el.replaceChildren(maak('h1', {}, 'Meer'), status, instellingenKaart, linksKaart, ledenKaart, backupKaart,
     maak('button', { type: 'button', class: 'knop licht', onclick: async () => { await uitloggen(); location.reload(); } }, 'Uitloggen'));
 
   function meld(tekst, fout = false) { status.textContent = tekst; status.className = 'melding' + (fout ? ' fout' : ''); }
@@ -73,6 +75,7 @@ export async function toonMeer(el, staat) {
   }
 
   renderInstellingen();
+  initLinks(el, linksKaart, staat);
   await renderLeden();
   renderBackup();
 }

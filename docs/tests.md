@@ -147,3 +147,27 @@ Op verzoek is To-do losgetrokken van Meer en een eigen tabblad geworden (zes tab
 - [x] To-do is een eigen tabblad met eigen route (`tests/todo.spec.js`, verplaatst uit `tests/meer.spec.js`).
 - [x] Navigatie telt zes tabbladen, inclusief To-do, op telefoon en laptop (`tests/rook.spec.js`).
 - [x] Meer bevat geen to-do meer; reisinstellingen werken nog (`tests/meer.spec.js`).
+
+## Stap 6 – Links
+
+Geen nieuwe migratie nodig: de tabel `links` en de RLS-policy daarvoor bestonden al sinds stap 1.
+Links staan als kaart bij **Meer** (niet als eigen tabblad, zie het bijgewerkte "Schermen"-overzicht in `CLAUDE.md`).
+
+Tijdens het bouwen is ook een sluimerende testbrosheid opgelost: `tests/nepdb.js` gebruikte één gedeeld
+`REIS`-object voor alle testbestanden. Een wijziging in het ene bestand kon zo per ongeluk doorlekken naar een
+andere test die daarna toevallig in dezelfde worker draaide. `nepSupabase()` zet `REIS` nu bij elke aanroep terug
+naar de standaardwaarden; de losse `beforeEach`-resets in `dagen.spec.js`, `route.spec.js` en `budget.spec.js`
+waren daardoor overbodig en zijn verwijderd.
+
+### Automatisch (Playwright, geslaagd; `tests/links.spec.js`)
+- [x] Link toevoegen; een URL zonder `https://` ervoor krijgt dat automatisch.
+- [x] Zonder titel wordt de URL zelf getoond.
+- [x] Link koppelen aan een dag, plaats en taak tegelijk.
+- [x] Link bewerken en verwijderen.
+- [x] Een URL van alleen spaties geeft de eigen foutmelding (een echt lege URL vangt het `required`-attribuut al af).
+- [x] Telefoon: geen horizontaal scrollen, ook met een lange titel.
+
+### Handmatig (echte Supabase)
+- [ ] Link toevoegen en openen (opent in een nieuw tabblad).
+- [ ] Link koppelen aan een dag/plaats/taak en controleren dat de koppeling klopt.
+- [ ] Wijziging van Eric verschijnt zonder herladen bij Ilse.
