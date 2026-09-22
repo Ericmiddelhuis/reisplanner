@@ -133,10 +133,10 @@ reisinstellingen/leden/back-up, wel gecontroleerd met een regressietest).
 - [x] Telefoon: geen horizontaal scrollen.
 
 ### Handmatig (echte Supabase)
-- [ ] De vier standaardtaken uit `seed.sql` (visum, grensvergunning, malaria, paspoorten) zijn zichtbaar bij Meer.
-- [ ] Taak toevoegen, toewijzen aan Eric of Ilse, en afvinken.
-- [ ] Wijziging van Eric (nieuwe taak, afvinken) verschijnt zonder herladen bij Ilse.
-- [ ] Reisinstellingen, leden uitnodigen en export/import werken nog steeds na het herschrijven van het scherm.
+- [x] De vier standaardtaken uit `seed.sql` (visum, grensvergunning, malaria, paspoorten) zijn zichtbaar (inmiddels bij het eigen tabblad To-do, zie de correctie hieronder).
+- [x] Taak toevoegen, toewijzen aan Eric of Ilse, en afvinken.
+- [x] Wijziging van Eric (nieuwe taak, afvinken) verschijnt zonder herladen bij Ilse.
+- [x] Reisinstellingen, leden uitnodigen en export/import werken nog steeds na het herschrijven van het scherm.
 
 ## Stap 5, correctie: To-do als eigen tabblad
 
