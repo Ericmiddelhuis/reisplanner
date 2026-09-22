@@ -210,7 +210,10 @@ export async function toonDagen(el, staat) {
           STATUSSEN.map((s) => maak('option', { value: s }, s[0].toUpperCase() + s.slice(1)))),
         maak('label', { for: 'dag-notitie' }, 'Notitie'),
         maak('textarea', { id: 'dag-notitie', rows: '3', onchange: (ev) => bewaarDag(dag, { notitie: ev.target.value.trim() || null }) },
-          dag.notitie || '')),
+          dag.notitie || ''),
+        maak('label', { for: 'dag-dagboek', style: 'margin-top:12px' }, 'Dagboek'),
+        maak('textarea', { id: 'dag-dagboek', rows: '3', placeholder: 'Wat gebeurde er deze dag? (los van de planningsnotitie hierboven)',
+          onchange: (ev) => bewaarDag(dag, { dagboek: ev.target.value.trim() || null }) }, dag.dagboek || '')),
       ...dagdelen,
       maak('button', { type: 'button', class: 'knop licht gevaar', onclick: () => verwijderDag(dag) }, 'Deze dag verwijderen'));
   }

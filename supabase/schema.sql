@@ -17,6 +17,10 @@ create table if not exists trips (
   -- koersen: hoeveel EUR is 1 eenheid van de valuta (handmatig instelbaar)
   koersen jsonb not null default '{"EUR":1,"NAD":0.05,"BWP":0.07}',
   notitie text,
+  -- vrij tekstveld: vaccinaties, allergieën, medicatie per persoon
+  gezondheid text,
+  -- vrij tekstveld: alarmnummers, ambassade, verzekeraar; zelf invullen en controleren vóór vertrek
+  noodinfo text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   updated_by uuid references auth.users(id)

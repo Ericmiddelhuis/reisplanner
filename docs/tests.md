@@ -171,3 +171,38 @@ waren daardoor overbodig en zijn verwijderd.
 - [x] Link toevoegen en openen (opent in een nieuw tabblad).
 - [x] Link koppelen aan een dag/plaats/taak en controleren dat de koppeling klopt.
 - [x] Wijziging van Eric verschijnt zonder herladen bij Ilse.
+
+## Stap 7 – Boekingen, Paklijst, Documenten, Gezondheid, Reisdagboek, Noodinfo
+
+Eenmalig eerst `supabase/stap7.sql` uitvoeren in de Supabase SQL-editor (twee tekstvelden op `trips`;
+Boekingen/Paklijst/Documenten gebruiken tabellen die al sinds stap 1 bestaan).
+
+**Grotere wijziging:** "Meer" is nu een echt menu in plaats van één lange pagina. Elk onderdeel (ook de eerder
+gebouwde Reisinstellingen, Links, Leden, Back-up) is een eigen pagina onder `#/meer/...` met een terugknop. Dat was
+nodig omdat deze stap zes onderdelen toevoegt; alles op één pagina was niet meer bruikbaar.
+
+**Onderweg gevonden en gerepareerd, geen onderdeel van de gevraagde stap:**
+- Wijzigingen aan Links van de ander verschenen niet vanzelf: de tabel `links` ontbrak in de Realtime-lijst in `app.js`
+  sinds stap 6. Nu toegevoegd, samen met `packing_items` en `documents`.
+- Export/import (stap 1) nam de tabel `budgetten` niet mee sinds stap 4. Toegevoegd aan de lijst in `db.js`.
+
+### Automatisch (Playwright, geslaagd)
+- [x] Menu toont alle onderdelen als echte links; navigeren en terug werkt (`tests/meer.spec.js`).
+- [x] Reisinstellingen en leden uitnodigen werken nog na het verplaatsen (regressie, `tests/meer.spec.js`).
+- [x] Boekingen: toevoegen, filteren op status, een automatisch aangemaakte overnachting aanvullen, verwijderen (`tests/boekingen.spec.js`).
+- [x] Paklijst: toevoegen met groep/voor wie, afvinken, filteren, bewerken, verwijderen (`tests/paklijst.spec.js`).
+- [x] Documenten: toevoegen zonder documentnummerveld, badge bij verlopen en bij bijna verlopen (binnen 6 maanden), geen badge als er nog ruim geldigheid is (`tests/documenten.spec.js`).
+- [x] Gezondheid en Noodinfo: tekst opslaan en na herladen nog aanwezig; veiligheidsmelding bij Noodinfo zichtbaar (`tests/gezondheid.spec.js`, `tests/noodinfo.spec.js`).
+- [x] Reisdagboek: elke dag heeft een eigen, onafhankelijk tekstveld (`tests/reisdagboek.spec.js`).
+- [x] Dagboek bij Dagen is een apart veld van de planningsnotitie (`tests/dagen.spec.js`).
+- [x] Boekingskosten tellen mee bij Budget, verdeeld naar betaald/gepland op basis van hun eigen status (`tests/budget.spec.js`).
+- [x] Telefoon: geen horizontaal scrollen, op alle nieuwe schermen.
+
+### Handmatig (echte Supabase)
+- [ ] `stap7.sql` foutloos uitgevoerd.
+- [ ] Boeking toevoegen, en de automatisch aangemaakte overnachtingsboekingen aanvullen met kosten/bevestiging.
+- [ ] Paklijst gebruiken voor de hele reis.
+- [ ] Een document per persoon toevoegen (geen nummers!) en de verval-badges controleren met echte datums.
+- [ ] Gezondheid en Noodinfo invullen; Noodinfo vóór vertrek zelf controleren op actuele nummers.
+- [ ] Reisdagboek bijhouden tijdens/na (een deel van) de reis.
+- [ ] Wijziging van Eric bij elk nieuw onderdeel verschijnt zonder herladen bij Ilse.

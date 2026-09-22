@@ -33,3 +33,6 @@ export function datumVoor(startdatum, dagnummer) {
 
 export const geldIn = (n, valuta = 'EUR') => new Intl.NumberFormat('nl-NL', { style: 'currency', currency: valuta }).format(n);
 export const geld = (n) => geldIn(n, 'EUR');
+
+// Kop met terugknop voor de onderdelen onder Meer (bijv. #/meer/boekingen)
+export const terugHeader = (titel) => [maak('a', { href: '#/meer', class: 'terug-link' }, '← Meer'), maak('h1', {}, titel)];

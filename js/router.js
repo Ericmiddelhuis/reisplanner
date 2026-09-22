@@ -10,7 +10,8 @@ export const ROUTES = [
 
 export function huidigePad() {
   const p = location.hash.replace(/^#\/?/, '');
-  return ROUTES.some((r) => r.pad === p) ? p : 'overzicht';
+  const top = p.split('/')[0];   // 'meer/boekingen' hoort bij het tabblad 'meer'
+  return ROUTES.some((r) => r.pad === top) ? p : 'overzicht';
 }
 
 export function startRouter(bijWijziging) {

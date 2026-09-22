@@ -5,7 +5,7 @@ import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Tabellen die bij export/import horen, in volgorde van afhankelijkheid
-const TABELLEN = ['places', 'days', 'bookings', 'activities', 'legs', 'expenses',
+const TABELLEN = ['places', 'days', 'bookings', 'activities', 'legs', 'expenses', 'budgetten',
   'tasks', 'links', 'packing_items', 'documents'];
 
 export async function laadReizen() {

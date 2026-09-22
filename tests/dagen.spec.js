@@ -69,6 +69,16 @@ test('titel, plaats, overnachting en boekingsstatus', async ({ page }) => {
   await expect.poll(() => db.bookings.length).toBe(0);
 });
 
+test('dagboek is een apart veld van de planningsnotitie', async ({ page }) => {
+  const db = await opDagen(page);
+  await page.getByLabel('Notitie').fill('Nog een tankstation zoeken onderweg');
+  await page.getByLabel('Notitie').blur();
+  await page.getByLabel('Dagboek').fill('Prachtige zonsondergang gezien bij de camping.');
+  await page.getByLabel('Dagboek').blur();
+  await expect.poll(() => db.days[0].notitie).toBe('Nog een tankstation zoeken onderweg');
+  await expect.poll(() => db.days[0].dagboek).toBe('Prachtige zonsondergang gezien bij de camping.');
+});
+
 test('activiteit per dagdeel toevoegen, bewerken en verwijderen', async ({ page }) => {
   const db = await opDagen(page);
   const middag = page.locator('.kaart', { has: page.getByRole('heading', { name: 'Middag' }) });

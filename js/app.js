@@ -76,10 +76,11 @@ function bouwApp() {
 function toonScherm(pad) {
   staat.pad = pad;
   staat.opWijziging = null;   // het vorige scherm luistert niet meer mee
+  const top = pad.split('/')[0];   // 'meer/boekingen' hoort bij het tabblad 'meer'
   for (const a of root.querySelectorAll('#navigatie a')) {
-    if (a.dataset.pad === pad) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    if (a.dataset.pad === top) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   }
-  SCHERMEN[pad](root.querySelector('#hoofd'), staat);
+  SCHERMEN[top](root.querySelector('#hoofd'), staat, pad);
 }
 
 async function start() {
@@ -95,7 +96,8 @@ async function start() {
     staat.reis = nieuw;
     if (staat.pad === 'overzicht') bijReisWijziging(root.querySelector('#hoofd'), nieuw);
   });
-  volgTabellen(['days', 'places', 'activities', 'bookings', 'legs', 'expenses', 'budgetten', 'tasks'], () => staat.opWijziging?.());
+  volgTabellen(['days', 'places', 'activities', 'bookings', 'legs', 'expenses', 'budgetten', 'tasks',
+    'links', 'packing_items', 'documents'], () => staat.opWijziging?.());
   startRouter(toonScherm);
 }
 

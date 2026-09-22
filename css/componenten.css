@@ -102,3 +102,12 @@ input, textarea, select {
 .link-titel { flex: 1; display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: var(--inkt);
   min-height: 44px; padding: 8px 14px; background: var(--kaart); border: 1px solid var(--rand); border-radius: 14px; }
 .link-titel strong { color: var(--groen); word-break: break-word; }
+
+/* Menu (Meer) en terugknop naar dat menu */
+.menu { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 8px; }
+.menu-item { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 16px;
+  background: var(--kaart); border: 1px solid var(--rand); border-radius: 14px; text-decoration: none;
+  color: var(--inkt); font-weight: 500; }
+.menu-item::after { content: '›'; color: var(--gedempt); font-size: 1.3rem; line-height: 1; }
+.terug-link { display: inline-block; margin-bottom: 8px; color: var(--groen); font-weight: 600; text-decoration: none; }
+.terug-link:hover { text-decoration: underline; }

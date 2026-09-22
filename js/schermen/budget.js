@@ -7,11 +7,14 @@ import { CATEGORIEEN } from '../categorieen.js';
 const VALUTAS = ['EUR', 'NAD', 'BWP'];
 const STATUSSEN = ['gepland', 'betaald'];
 const BRANDSTOF_CATEGORIE = '4x4-huurauto & brandstof';   // brandstofkosten (Route) horen altijd bij deze categorie
+// Elk boekingstype hoort bij precies één budgetcategorie: geen keuze nodig, net als bij brandstof.
+const BOEKING_CATEGORIE = { vlucht: 'Vluchten', auto: '4x4-huurauto & brandstof', verblijf: 'Lodges & campings',
+  activiteit: "Parkgelden & safari's", park: "Parkgelden & safari's" };
 
 const slug = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 export async function toonBudget(el, staat) {
-  let d = { expenses: [], budgetten: [], dagen: [], activiteiten: [], etappes: [] };
+  let d = { expenses: [], budgetten: [], dagen: [], activiteiten: [], etappes: [], boekingen: [] };
   const ui = { valuta: 'EUR' };
   const tripId = () => staat.reis.id;
 
@@ -23,10 +26,10 @@ export async function toonBudget(el, staat) {
   const eurVan = (e) => e.bedrag_eur ?? naarEur(Number(e.bedrag), e.valuta);
 
   async function laden() {
-    const [expenses, budgetten, dagen, activiteiten, etappes] = await Promise.all([
+    const [expenses, budgetten, dagen, activiteiten, etappes, boekingen] = await Promise.all([
       lijst('expenses', tripId()), lijst('budgetten', tripId()), lijst('days', tripId(), 'dagnummer'),
-      lijst('activities', tripId()), lijst('legs', tripId())]);
-    d = { expenses, budgetten, dagen, activiteiten, etappes };
+      lijst('activities', tripId()), lijst('legs', tripId()), lijst('bookings', tripId())]);
+    d = { expenses, budgetten, dagen, activiteiten, etappes, boekingen };
   }
 
   el.replaceChildren(maak('h1', {}, 'Budget'), maak('p', { class: 'gedempt' }, 'Laden…'));
@@ -52,12 +55,15 @@ export async function toonBudget(el, staat) {
   // "4x4-huurauto & brandstof".
   const activiteitenMetKosten = (cat) => d.activiteiten.filter((a) => a.kosten != null && (cat === undefined || a.categorie === cat));
   const etappesMetBrandstof = (cat) => cat !== undefined && cat !== BRANDSTOF_CATEGORIE ? [] : d.etappes.filter((l) => l.brandstofkosten != null);
+  // Boekingen hebben wél een eigen status: "betaald" telt als betaald, de rest (idee/nog boeken/geboekt) als gepland.
+  const boekingenMetKosten = (cat) => d.boekingen.filter((b) => b.kosten != null && (cat === undefined || BOEKING_CATEGORIE[b.type] === cat));
 
   function totalen() {
     let betaald = 0, gepland = 0;
     for (const e of d.expenses) { const eur = eurVan(e); if (e.status === 'betaald') betaald += eur; else gepland += eur; }
     for (const a of activiteitenMetKosten()) gepland += Number(a.kosten);
     for (const l of etappesMetBrandstof()) gepland += Number(l.brandstofkosten);
+    for (const b of boekingenMetKosten()) { if (b.status === 'betaald') betaald += Number(b.kosten); else gepland += Number(b.kosten); }
     return { betaald, gepland };
   }
 
@@ -68,6 +74,7 @@ export async function toonBudget(el, staat) {
     }
     for (const a of activiteitenMetKosten(cat)) gepland += Number(a.kosten);
     for (const l of etappesMetBrandstof(cat)) gepland += Number(l.brandstofkosten);
+    for (const b of boekingenMetKosten(cat)) { if (b.status === 'betaald') betaald += Number(b.kosten); else gepland += Number(b.kosten); }
     return { betaald, gepland, totaal: betaald + gepland };
   }
 
@@ -164,9 +171,11 @@ export async function toonBudget(el, staat) {
     const over = begrootEur > 0 && betaald + gepland > begrootEur;
     const uitActiviteiten = activiteitenMetKosten(cat).reduce((s, a) => s + Number(a.kosten), 0);
     const uitBrandstof = etappesMetBrandstof(cat).reduce((s, l) => s + Number(l.brandstofkosten), 0);
+    const uitBoekingen = boekingenMetKosten(cat).reduce((s, b) => s + Number(b.kosten), 0);
     const waarvan = [
       uitActiviteiten > 0 ? `Waarvan ${disp(uitActiviteiten)} aan activiteiten uit Dagen.` : null,
       uitBrandstof > 0 ? `Waarvan ${disp(uitBrandstof)} aan brandstof uit Route.` : null,
+      uitBoekingen > 0 ? `Waarvan ${disp(uitBoekingen)} aan boekingen uit Meer.` : null,
     ].filter((x) => x != null);
 
     return maak('div', { class: 'kaart' },

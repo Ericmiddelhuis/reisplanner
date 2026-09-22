@@ -61,7 +61,9 @@ Oorspronkelijk ontwerp had vijf tabbladen met To-do onder "Meer". In stap 5 is T
 3. **Route** – kaart met stops en etappes, lijst van etappes met afstand, rijtijd, wegtype en een waarschuwing bij lange rijdagen.
 4. **Budget** – totaalbudget, per categorie begroot vs. betaald, valutaschakelaar EUR / NAD / BWP, uitgave toevoegen.
 5. **To-do** – taken met deadline, toewijzing (Eric/Ilse), categorie en optionele koppeling aan een dag; filter op open/klaar/alle.
-6. **Meer** – Paklijst, Boekingen, Links, Documenten, Gezondheid, Reisdagboek, Noodinfo (offline).
+6. **Meer** – een menu (sinds stap 7) naar: Reisinstellingen, Boekingen, Paklijst, Links, Documenten, Gezondheid,
+   Reisdagboek, Noodinfo (offline vanaf stap 8), Leden, Back-up. Elk onderdeel is een eigen pagina onder `#/meer/...`
+   met een "← Meer"-terugknop.
 
 Laptop: zijbalk links met dezelfde onderdelen; bij Dagen staan daglijst, kaart en dagdetails naast elkaar.
 
@@ -88,7 +90,7 @@ Alles hangt aan een reis (`trip_id`), zodat de app later voor een volgende reis 
 
 | Tabel | Belangrijkste velden |
 |---|---|
-| trips | naam, startdatum, einddatum, basisvaluta (EUR), totaalbudget, max_rijuren_per_dag (standaard 4) |
+| trips | naam, startdatum, einddatum, basisvaluta (EUR), totaalbudget, max_rijuren_per_dag (standaard 4), gezondheid, noodinfo (beide vrije tekst) |
 | trip_members | trip_id, user_id (mag leeg zijn), email, rol. Uitnodigen gaat via e-mail: wie inlogt met dat adres, is lid |
 | places | naam, land (NA/BW), type (stad, park, camping, lodge, grenspost, tankstation), lat, lng, notitie |
 | days | datum, dagnummer, titel, overnachting_place_id, notitie, dagboek |
@@ -152,3 +154,4 @@ Sla geen paspoort-, visum- of creditcardnummers op in de database. Alleen type, 
 - Stap 4: klaar
 - Stap 5: klaar
 - Stap 6: klaar
+- Stap 7: gebouwd en automatisch getest; handmatige test nog te doen (eerst supabase/stap7.sql uitvoeren, zie docs/tests.md)

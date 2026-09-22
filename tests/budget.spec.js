@@ -134,6 +134,20 @@ test('brandstofkosten uit Route tellen mee bij Budget (categorie 4x4-huurauto & 
   await expect(buffer.getByText('Afgeleid uit geplande en betaalde uitgaven: € 0,00')).toBeVisible();
 });
 
+test('boekingskosten uit Meer tellen mee bij Budget, verdeeld naar betaald/gepland op basis van hun eigen status', async ({ page }) => {
+  const bookings = [
+    { id: 'b1', trip_id: REIS.id, type: 'vlucht', titel: 'Vlucht heen', status: 'betaald', kosten: 800 },
+    { id: 'b2', trip_id: REIS.id, type: 'verblijf', titel: 'Overnachting X', status: 'nog boeken', kosten: 60 },
+  ];
+  await opBudget(page, { bookings });
+  await expect(page.getByText('Betaald: € 800,00')).toBeVisible();
+  await expect(page.getByText('Gepland: € 60,00')).toBeVisible();
+  const vluchten = page.locator('.kaart', { has: page.getByRole('heading', { name: 'Vluchten' }) });
+  await expect(vluchten.getByText('Waarvan € 800,00 aan boekingen uit Meer.')).toBeVisible();
+  const lodges = page.locator('.kaart', { has: page.getByRole('heading', { name: 'Lodges & campings' }) });
+  await expect(lodges.getByText('Waarvan € 60,00 aan boekingen uit Meer.')).toBeVisible();
+});
+
 test('geen "betaald door"-veld meer bij een uitgave', async ({ page }) => {
   await opBudget(page);
   await page.getByRole('button', { name: '+ Uitgave toevoegen' }).click();

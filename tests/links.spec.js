@@ -2,16 +2,16 @@
 import { test, expect } from '@playwright/test';
 import { nepSupabase, REIS } from './nepdb.js';
 
-async function opMeer(page, begin = {}) {
+async function opLinks(page, begin = {}) {
   await page.setViewportSize({ width: 1280, height: 900 });
   const db = await nepSupabase(page, begin);
-  await page.goto('/#/meer');
-  await expect(page.getByRole('heading', { level: 2, name: 'Links' })).toBeVisible();
+  await page.goto('/#/meer/links');
+  await expect(page.getByRole('heading', { level: 1, name: 'Links' })).toBeVisible();
   return db;
 }
 
 test('link toevoegen zonder https:// ervoor krijgt dat automatisch', async ({ page }) => {
-  const db = await opMeer(page);
+  const db = await opLinks(page);
   await page.getByRole('button', { name: '+ Link toevoegen' }).click();
   const dlg = page.getByRole('dialog', { name: 'Nieuwe link' });
   await dlg.getByLabel('URL').fill('www.nwr.com.na');
@@ -27,7 +27,7 @@ test('link toevoegen zonder https:// ervoor krijgt dat automatisch', async ({ pa
 });
 
 test('zonder titel wordt de url getoond', async ({ page }) => {
-  const db = await opMeer(page);
+  const db = await opLinks(page);
   await page.getByRole('button', { name: '+ Link toevoegen' }).click();
   const dlg = page.getByRole('dialog', { name: 'Nieuwe link' });
   await dlg.getByLabel('URL').fill('https://etoshanationalpark.org');
@@ -39,7 +39,7 @@ test('link koppelen aan een dag, plaats en taak', async ({ page }) => {
   const dagen = [{ id: 'd1', trip_id: REIS.id, dagnummer: 3, datum: '2027-07-12' }];
   const plaatsen = [{ id: 'p1', trip_id: REIS.id, naam: 'Sesriem' }];
   const taken = [{ id: 't1', trip_id: REIS.id, titel: 'Visum regelen', klaar: false, created_at: 't1' }];
-  const db = await opMeer(page, { days: dagen, places: plaatsen, tasks: taken });
+  const db = await opLinks(page, { days: dagen, places: plaatsen, tasks: taken });
   await page.getByRole('button', { name: '+ Link toevoegen' }).click();
   const dlg = page.getByRole('dialog', { name: 'Nieuwe link' });
   await dlg.getByLabel('URL').fill('https://sesriem.example');
@@ -55,7 +55,7 @@ test('link koppelen aan een dag, plaats en taak', async ({ page }) => {
 });
 
 test('link bewerken en verwijderen', async ({ page }) => {
-  const db = await opMeer(page, { links: [{ id: 'l1', trip_id: REIS.id, url: 'https://oud.example', titel: 'Oude titel' }] });
+  const db = await opLinks(page, { links: [{ id: 'l1', trip_id: REIS.id, url: 'https://oud.example', titel: 'Oude titel' }] });
   await expect(page.getByRole('link', { name: 'Oude titel' })).toBeVisible();
   await page.getByRole('button', { name: 'Bewerken' }).click();
   const dlg = page.getByRole('dialog', { name: 'Link bewerken' });
@@ -72,7 +72,7 @@ test('link bewerken en verwijderen', async ({ page }) => {
 });
 
 test('URL van alleen spaties geeft een foutmelding (required vangt een echt lege URL al af)', async ({ page }) => {
-  const db = await opMeer(page);
+  const db = await opLinks(page);
   await page.getByRole('button', { name: '+ Link toevoegen' }).click();
   const dlg = page.getByRole('dialog', { name: 'Nieuwe link' });
   await dlg.getByLabel('URL').fill('   ');
@@ -84,8 +84,8 @@ test('URL van alleen spaties geeft een foutmelding (required vangt een echt lege
 test('rooktest telefoon: Meer met links past op het scherm', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await nepSupabase(page, { links: [{ id: 'l1', trip_id: REIS.id, url: 'https://voorbeeld.example', titel: 'Een lange titel om op te testen of het scherm breekt' }] });
-  await page.goto('/#/meer');
-  await expect(page.getByRole('heading', { level: 2, name: 'Links' })).toBeVisible();
+  await page.goto('/#/meer/links');
+  await expect(page.getByRole('heading', { level: 1, name: 'Links' })).toBeVisible();
   const breedte = await page.evaluate(() => document.documentElement.scrollWidth);
   expect(breedte).toBeLessThanOrEqual(390);
 });

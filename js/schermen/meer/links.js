@@ -1,9 +1,9 @@
-// Links: nuttige URL's, optioneel gekoppeld aan een dag, plaats of taak. Wordt als kaart in Meer getoond.
-import { lijst, voegToe, wijzig, verwijder } from '../db.js';
-import { maak, dagTekst } from '../util.js';
-import { opendialoog, veld } from '../dialogen.js';
+// Links: nuttige URL's, optioneel gekoppeld aan een dag, plaats of taak
+import { lijst, voegToe, wijzig, verwijder } from '../../db.js';
+import { maak, dagTekst, terugHeader } from '../../util.js';
+import { opendialoog, veld } from '../../dialogen.js';
 
-export function initLinks(el, kaart, staat) {
+export async function toonLinks(el, staat) {
   let d = { links: [], dagen: [], plaatsen: [], taken: [] };
   const tripId = () => staat.reis.id;
 
@@ -12,6 +12,17 @@ export function initLinks(el, kaart, staat) {
       lijst('links', tripId()), lijst('days', tripId(), 'dagnummer'), lijst('places', tripId(), 'naam'), lijst('tasks', tripId())]);
     d = { links, dagen, plaatsen, taken };
   }
+
+  el.replaceChildren(...terugHeader('Links'), maak('p', { class: 'gedempt' }, 'Laden…'));
+  try { await laden(); } catch (e) {
+    el.replaceChildren(...terugHeader('Links'), maak('p', { class: 'melding fout' }, 'Laden mislukt: ' + e.message));
+    return;
+  }
+  if (staat.pad !== 'meer/links') return;
+
+  const status = maak('p', { class: 'melding verborgen', role: 'status' });
+  const kaart = maak('div', { class: 'kaart' });
+  el.replaceChildren(...terugHeader('Links'), status, kaart);
 
   const dagLabel = (dag) => `Dag ${dag.dagnummer}` + (dag.datum ? ' · ' + dagTekst(dag.datum) : '') + (dag.titel ? ' · ' + dag.titel : '');
   const gekoppeldAan = (link) => {
@@ -24,12 +35,9 @@ export function initLinks(el, kaart, staat) {
   function render() {
     const gesorteerd = [...d.links].sort((a, b) =>
       (a.categorie || '').localeCompare(b.categorie || '') || (a.titel || a.url).localeCompare(b.titel || b.url));
-    const metaVan = (link) => [link.categorie, gekoppeldAan(link)].filter(Boolean).join(' · ');
-
     kaart.replaceChildren(
-      maak('h2', {}, 'Links'),
       gesorteerd.length ? maak('ul', { class: 'lijst' }, gesorteerd.map((link) => {
-        const meta = metaVan(link);
+        const meta = [link.categorie, gekoppeldAan(link)].filter(Boolean).join(' · ');
         return maak('li', { class: 'link-regel' },
           maak('a', { class: 'link-titel', href: link.url, target: '_blank', rel: 'noopener noreferrer' },
             maak('strong', {}, link.titel || link.url),
@@ -57,7 +65,7 @@ export function initLinks(el, kaart, staat) {
       ev.preventDefault();
       let href = url.value.trim();
       if (!href) return toonFout('Vul een URL in.');
-      if (!/^https?:\/\//i.test(href)) href = 'https://' + href;   // handig als iemand "www...." typt
+      if (!/^https?:\/\//i.test(href)) href = 'https://' + href;
       const velden = { url: href, titel: titel.value.trim() || null, categorie: categorie.value.trim() || null,
         day_id: dagSel.value || null, place_id: plaatsSel.value || null, task_id: taakSel.value || null };
       try {
@@ -82,10 +90,9 @@ export function initLinks(el, kaart, staat) {
     dlg = opendialoog(el, link ? 'Link bewerken' : 'Nieuwe link', form);
   }
 
-  // Realtime: hangt achter een eventueel al bestaande listener van dit scherm (chaining, geen overschrijving)
   let timer;
   const verwerk = async () => {
-    if (staat.pad !== 'meer') return;
+    if (staat.pad !== 'meer/links') return;
     const actief = document.activeElement;
     if (el.querySelector('dialog[open]') || (actief && el.contains(actief) && /^(INPUT|TEXTAREA|SELECT)$/.test(actief.tagName))) {
       timer = setTimeout(verwerk, 1000); return;
@@ -93,10 +100,7 @@ export function initLinks(el, kaart, staat) {
     try { await laden(); } catch { return; }
     render();
   };
-  const vorigeListener = staat.opWijziging;
-  staat.opWijziging = () => { vorigeListener?.(); clearTimeout(timer); timer = setTimeout(verwerk, 300); };
+  staat.opWijziging = () => { clearTimeout(timer); timer = setTimeout(verwerk, 300); };
 
-  laden().then(render).catch((e) => {
-    kaart.replaceChildren(maak('h2', {}, 'Links'), maak('p', { class: 'melding fout' }, 'Laden mislukt: ' + e.message));
-  });
+  render();
 }
