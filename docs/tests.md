@@ -168,6 +168,6 @@ waren daardoor overbodig en zijn verwijderd.
 - [x] Telefoon: geen horizontaal scrollen, ook met een lange titel.
 
 ### Handmatig (echte Supabase)
-- [ ] Link toevoegen en openen (opent in een nieuw tabblad).
-- [ ] Link koppelen aan een dag/plaats/taak en controleren dat de koppeling klopt.
-- [ ] Wijziging van Eric verschijnt zonder herladen bij Ilse.
+- [x] Link toevoegen en openen (opent in een nieuw tabblad).
+- [x] Link koppelen aan een dag/plaats/taak en controleren dat de koppeling klopt.
+- [x] Wijziging van Eric verschijnt zonder herladen bij Ilse.
