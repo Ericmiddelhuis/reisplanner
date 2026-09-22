@@ -6,11 +6,12 @@ import { CATEGORIEEN } from '../categorieen.js';
 
 const VALUTAS = ['EUR', 'NAD', 'BWP'];
 const STATUSSEN = ['gepland', 'betaald'];
+const BRANDSTOF_CATEGORIE = '4x4-huurauto & brandstof';   // brandstofkosten (Route) horen altijd bij deze categorie
 
 const slug = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 export async function toonBudget(el, staat) {
-  let d = { expenses: [], budgetten: [], dagen: [], activiteiten: [] };
+  let d = { expenses: [], budgetten: [], dagen: [], activiteiten: [], etappes: [] };
   const ui = { valuta: 'EUR' };
   const tripId = () => staat.reis.id;
 
@@ -22,9 +23,10 @@ export async function toonBudget(el, staat) {
   const eurVan = (e) => e.bedrag_eur ?? naarEur(Number(e.bedrag), e.valuta);
 
   async function laden() {
-    const [expenses, budgetten, dagen, activiteiten] = await Promise.all([
-      lijst('expenses', tripId()), lijst('budgetten', tripId()), lijst('days', tripId(), 'dagnummer'), lijst('activities', tripId())]);
-    d = { expenses, budgetten, dagen, activiteiten };
+    const [expenses, budgetten, dagen, activiteiten, etappes] = await Promise.all([
+      lijst('expenses', tripId()), lijst('budgetten', tripId()), lijst('days', tripId(), 'dagnummer'),
+      lijst('activities', tripId()), lijst('legs', tripId())]);
+    d = { expenses, budgetten, dagen, activiteiten, etappes };
   }
 
   el.replaceChildren(maak('h1', {}, 'Budget'), maak('p', { class: 'gedempt' }, 'Laden…'));
@@ -45,13 +47,17 @@ export async function toonBudget(el, staat) {
   function meld(tekst, fout = false) { status.textContent = tekst; status.className = 'melding' + (fout ? ' fout' : ''); }
   const veilig = async (actie) => { try { await actie(); } catch (e) { meld(e.message, true); } };
 
-  // Activiteiten uit Dagen hebben geen betaald/gepland-status en geen eigen valuta: kosten in EUR, telt als gepland
+  // Activiteiten (Dagen) en brandstofkosten (Route) hebben geen betaald/gepland-status en geen eigen valuta:
+  // kosten in EUR, tellen als gepland mee. Activiteit-categorie is vrij te kiezen; brandstof hoort altijd bij
+  // "4x4-huurauto & brandstof".
   const activiteitenMetKosten = (cat) => d.activiteiten.filter((a) => a.kosten != null && (cat === undefined || a.categorie === cat));
+  const etappesMetBrandstof = (cat) => cat !== undefined && cat !== BRANDSTOF_CATEGORIE ? [] : d.etappes.filter((l) => l.brandstofkosten != null);
 
   function totalen() {
     let betaald = 0, gepland = 0;
     for (const e of d.expenses) { const eur = eurVan(e); if (e.status === 'betaald') betaald += eur; else gepland += eur; }
     for (const a of activiteitenMetKosten()) gepland += Number(a.kosten);
+    for (const l of etappesMetBrandstof()) gepland += Number(l.brandstofkosten);
     return { betaald, gepland };
   }
 
@@ -61,6 +67,7 @@ export async function toonBudget(el, staat) {
       const eur = eurVan(e); if (e.status === 'betaald') betaald += eur; else gepland += eur;
     }
     for (const a of activiteitenMetKosten(cat)) gepland += Number(a.kosten);
+    for (const l of etappesMetBrandstof(cat)) gepland += Number(l.brandstofkosten);
     return { betaald, gepland, totaal: betaald + gepland };
   }
 
@@ -156,6 +163,11 @@ export async function toonBudget(el, staat) {
     const pct = begrootEur > 0 ? Math.min(100, (betaald / begrootEur) * 100) : 0;
     const over = begrootEur > 0 && betaald + gepland > begrootEur;
     const uitActiviteiten = activiteitenMetKosten(cat).reduce((s, a) => s + Number(a.kosten), 0);
+    const uitBrandstof = etappesMetBrandstof(cat).reduce((s, l) => s + Number(l.brandstofkosten), 0);
+    const waarvan = [
+      uitActiviteiten > 0 ? `Waarvan ${disp(uitActiviteiten)} aan activiteiten uit Dagen.` : null,
+      uitBrandstof > 0 ? `Waarvan ${disp(uitBrandstof)} aan brandstof uit Route.` : null,
+    ].filter((x) => x != null);
 
     return maak('div', { class: 'kaart' },
       maak('h3', {}, cat),
@@ -163,7 +175,7 @@ export async function toonBudget(el, staat) {
       begrootWeergave,
       maak('div', { class: 'mini-balk' }, maak('span', { class: 'mini-vul' + (over ? ' over' : ''), style: `width:${pct}%` })),
       maak('p', { class: 'gedempt' }, `Betaald ${disp(betaald)} van ${disp(begrootEur)}` + (over ? ' — over budget' : '')),
-      uitActiviteiten > 0 ? maak('p', { class: 'gedempt' }, `Waarvan ${disp(uitActiviteiten)} aan activiteiten uit Dagen.`) : null);
+      waarvan.map((t) => maak('p', { class: 'gedempt' }, t)));
   }
 
   function renderCategorieen() {

@@ -104,3 +104,16 @@ Eenmalig `supabase/stap4b.sql` uitvoeren in de Supabase SQL-editor (kolom `activ
 ### Handmatig
 - [ ] `stap4b.sql` foutloos uitgevoerd.
 - [ ] Activiteit met kosten en een categorie toevoegen bij Dagen; bedrag verschijnt bij Budget.
+
+## Stap 4, correctie 2: brandstofkosten uit Route
+
+Geen nieuwe migratie nodig (`legs.brandstofkosten` bestond al).
+
+Brandstofkosten bij een etappe tellen nu mee in de budgetbalk en altijd bij de categorie "4x4-huurauto & brandstof"
+(geen keuze nodig: brandstof hoort daar altijd bij, anders dan bij activiteiten).
+
+### Automatisch (Playwright, geslaagd)
+- [x] Brandstofkosten van een etappe tellen mee in de budgetbalk en bij "4x4-huurauto & brandstof" (`tests/budget.spec.js`).
+
+### Handmatig
+- [ ] Brandstofkosten invullen bij een etappe (Route); bedrag verschijnt bij Budget onder 4x4-huurauto & brandstof.

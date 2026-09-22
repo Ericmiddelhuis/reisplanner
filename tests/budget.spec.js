@@ -126,6 +126,19 @@ test('activiteit met kosten en categorie uit Dagen telt mee bij Budget', async (
   await expect(page.locator('#uitgaven')).not.toContainText('Dune 45');
 });
 
+test('brandstofkosten uit Route tellen mee bij Budget (categorie 4x4-huurauto & brandstof)', async ({ page }) => {
+  const places = [{ id: 'p1', trip_id: REIS.id, naam: 'Windhoek' }, { id: 'p2', trip_id: REIS.id, naam: 'Sesriem' }];
+  const legs = [{ id: 'l1', trip_id: REIS.id, van_place_id: 'p1', naar_place_id: 'p2', brandstofkosten: 45 }];
+  await opBudget(page, { places, legs });
+  await expect(page.getByText('Gepland: € 45,00')).toBeVisible();
+  const kaart = page.locator('.kaart', { has: page.getByRole('heading', { name: '4x4-huurauto & brandstof' }) });
+  await expect(kaart.getByText('Afgeleid uit geplande en betaalde uitgaven: € 45,00')).toBeVisible();
+  await expect(kaart.getByText('Waarvan € 45,00 aan brandstof uit Route.')).toBeVisible();
+  // Brandstofkosten horen niet bij een andere categorie
+  const buffer = page.locator('.kaart', { has: page.getByRole('heading', { name: 'Buffer', exact: true }) });
+  await expect(buffer.getByText('Afgeleid uit geplande en betaalde uitgaven: € 0,00')).toBeVisible();
+});
+
 test('geen "betaald door"-veld meer bij een uitgave', async ({ page }) => {
   await opBudget(page);
   await page.getByRole('button', { name: '+ Uitgave toevoegen' }).click();
