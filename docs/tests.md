@@ -80,12 +80,12 @@ Eenmalig eerst `supabase/stap4.sql` uitvoeren in de Supabase SQL-editor (tabel `
 - [x] Telefoon: geen horizontaal scrollen.
 
 ### Handmatig (echte Supabase)
-- [ ] `stap4.sql` foutloos uitgevoerd.
-- [ ] Totaalbudget instellen bij Budget; balk en "vrij"-bedrag kloppen.
-- [ ] Een paar uitgaven toevoegen in verschillende valuta en categorieën.
-- [ ] Een categorie op handmatig zetten, een bedrag invullen, en weer terug naar afgeleid.
-- [ ] Valutaschakelaar en wisselkoersen aanpassen; bedragen kloppen in NAD en BWP.
-- [ ] Wijziging van Eric (uitgave, begroting) verschijnt zonder herladen bij Ilse.
+- [x] `stap4.sql` foutloos uitgevoerd.
+- [x] Totaalbudget instellen bij Budget; balk en "vrij"-bedrag kloppen.
+- [x] Een paar uitgaven toevoegen in verschillende valuta en categorieën.
+- [x] Een categorie op handmatig zetten, een bedrag invullen, en weer terug naar afgeleid.
+- [x] Valutaschakelaar en wisselkoersen aanpassen; bedragen kloppen in NAD en BWP.
+- [x] Wijziging van Eric (uitgave, begroting) verschijnt zonder herladen bij Ilse.
 
 ## Stap 4, correctie (naar aanleiding van handmatig testen)
 
@@ -102,8 +102,8 @@ Eenmalig `supabase/stap4b.sql` uitvoeren in de Supabase SQL-editor (kolom `activ
 - [x] Activiteit-dialoog slaat de gekozen categorie op (`tests/dagen.spec.js`).
 
 ### Handmatig
-- [ ] `stap4b.sql` foutloos uitgevoerd.
-- [ ] Activiteit met kosten en een categorie toevoegen bij Dagen; bedrag verschijnt bij Budget.
+- [x] `stap4b.sql` foutloos uitgevoerd.
+- [x] Activiteit met kosten en een categorie toevoegen bij Dagen; bedrag verschijnt bij Budget.
 
 ## Stap 4, correctie 2: brandstofkosten uit Route
 
@@ -116,4 +116,4 @@ Brandstofkosten bij een etappe tellen nu mee in de budgetbalk en altijd bij de c
 - [x] Brandstofkosten van een etappe tellen mee in de budgetbalk en bij "4x4-huurauto & brandstof" (`tests/budget.spec.js`).
 
 ### Handmatig
-- [ ] Brandstofkosten invullen bij een etappe (Route); bedrag verschijnt bij Budget onder 4x4-huurauto & brandstof.
+- [x] Brandstofkosten invullen bij een etappe (Route); bedrag verschijnt bij Budget onder 4x4-huurauto & brandstof.
