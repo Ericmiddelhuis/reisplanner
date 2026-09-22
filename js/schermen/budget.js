@@ -2,16 +2,15 @@
 import { lijst, voegToe, wijzig, verwijder, bewaarReis } from '../db.js';
 import { maak, dagTekst, geldIn } from '../util.js';
 import { opendialoog, veld } from '../dialogen.js';
+import { CATEGORIEEN } from '../categorieen.js';
 
-export const CATEGORIEEN = ['Vluchten', '4x4-huurauto & brandstof', 'Lodges & campings', "Parkgelden & safari's",
-  'Eten & boodschappen', 'Visum/grens & verzekering', 'Buffer'];
 const VALUTAS = ['EUR', 'NAD', 'BWP'];
 const STATUSSEN = ['gepland', 'betaald'];
 
 const slug = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 export async function toonBudget(el, staat) {
-  let d = { expenses: [], budgetten: [], dagen: [] };
+  let d = { expenses: [], budgetten: [], dagen: [], activiteiten: [] };
   const ui = { valuta: 'EUR' };
   const tripId = () => staat.reis.id;
 
@@ -23,9 +22,9 @@ export async function toonBudget(el, staat) {
   const eurVan = (e) => e.bedrag_eur ?? naarEur(Number(e.bedrag), e.valuta);
 
   async function laden() {
-    const [expenses, budgetten, dagen] = await Promise.all([
-      lijst('expenses', tripId()), lijst('budgetten', tripId()), lijst('days', tripId(), 'dagnummer')]);
-    d = { expenses, budgetten, dagen };
+    const [expenses, budgetten, dagen, activiteiten] = await Promise.all([
+      lijst('expenses', tripId()), lijst('budgetten', tripId()), lijst('days', tripId(), 'dagnummer'), lijst('activities', tripId())]);
+    d = { expenses, budgetten, dagen, activiteiten };
   }
 
   el.replaceChildren(maak('h1', {}, 'Budget'), maak('p', { class: 'gedempt' }, 'Laden…'));
@@ -40,15 +39,19 @@ export async function toonBudget(el, staat) {
   const totaalKaart = maak('div', { class: 'kaart' });
   const balkKaart = maak('div', { class: 'kaart' });
   const categorieLijst = maak('div', { id: 'categorieen' });
-  const uitgavenKaart = maak('div', { class: 'kaart' });
+  const uitgavenKaart = maak('div', { class: 'kaart', id: 'uitgaven' });
   el.replaceChildren(maak('h1', {}, 'Budget'), status, totaalKaart, balkKaart, categorieLijst, uitgavenKaart);
 
   function meld(tekst, fout = false) { status.textContent = tekst; status.className = 'melding' + (fout ? ' fout' : ''); }
   const veilig = async (actie) => { try { await actie(); } catch (e) { meld(e.message, true); } };
 
+  // Activiteiten uit Dagen hebben geen betaald/gepland-status en geen eigen valuta: kosten in EUR, telt als gepland
+  const activiteitenMetKosten = (cat) => d.activiteiten.filter((a) => a.kosten != null && (cat === undefined || a.categorie === cat));
+
   function totalen() {
     let betaald = 0, gepland = 0;
     for (const e of d.expenses) { const eur = eurVan(e); if (e.status === 'betaald') betaald += eur; else gepland += eur; }
+    for (const a of activiteitenMetKosten()) gepland += Number(a.kosten);
     return { betaald, gepland };
   }
 
@@ -57,6 +60,7 @@ export async function toonBudget(el, staat) {
     for (const e of d.expenses.filter((x) => x.categorie === cat)) {
       const eur = eurVan(e); if (e.status === 'betaald') betaald += eur; else gepland += eur;
     }
+    for (const a of activiteitenMetKosten(cat)) gepland += Number(a.kosten);
     return { betaald, gepland, totaal: betaald + gepland };
   }
 
@@ -151,13 +155,15 @@ export async function toonBudget(el, staat) {
 
     const pct = begrootEur > 0 ? Math.min(100, (betaald / begrootEur) * 100) : 0;
     const over = begrootEur > 0 && betaald + gepland > begrootEur;
+    const uitActiviteiten = activiteitenMetKosten(cat).reduce((s, a) => s + Number(a.kosten), 0);
 
     return maak('div', { class: 'kaart' },
       maak('h3', {}, cat),
       maak('div', { class: 'vinkje' }, vinkje, maak('label', { for: id + '-vink' }, 'Handmatig begroot bedrag')),
       begrootWeergave,
       maak('div', { class: 'mini-balk' }, maak('span', { class: 'mini-vul' + (over ? ' over' : ''), style: `width:${pct}%` })),
-      maak('p', { class: 'gedempt' }, `Betaald ${disp(betaald)} van ${disp(begrootEur)}` + (over ? ' — over budget' : '')));
+      maak('p', { class: 'gedempt' }, `Betaald ${disp(betaald)} van ${disp(begrootEur)}` + (over ? ' — over budget' : '')),
+      uitActiviteiten > 0 ? maak('p', { class: 'gedempt' }, `Waarvan ${disp(uitActiviteiten)} aan activiteiten uit Dagen.`) : null);
   }
 
   function renderCategorieen() {
@@ -172,7 +178,7 @@ export async function toonBudget(el, staat) {
       gesorteerd.length ? maak('ul', { class: 'lijst' }, gesorteerd.map((e) => maak('li', {},
         maak('button', { type: 'button', class: 'activiteit', onclick: () => vraagUitgave(e) },
           maak('strong', {}, e.omschrijving || e.categorie || 'Uitgave'),
-          maak('span', { class: 'gedempt' }, [e.categorie, dagVanId(e.day_id), e.betaald_door && 'door ' + e.betaald_door].filter(Boolean).join(' · ')),
+          maak('span', { class: 'gedempt' }, [e.categorie, dagVanId(e.day_id)].filter(Boolean).join(' · ')),
           maak('span', {}, geldIn(Number(e.bedrag), e.valuta) + (e.valuta !== ui.valuta ? ` (${disp(eurVan(e))})` : '')),
           maak('span', { class: 'badge ' + (e.status === 'betaald' ? 'betaald' : 'nog-boeken') }, e.status)))))
         : maak('p', { class: 'gedempt' }, 'Nog geen uitgaven.'),
@@ -189,8 +195,6 @@ export async function toonBudget(el, staat) {
       CATEGORIEEN.map((c) => maak('option', { value: c }, c)));
     const statusSel = maak('select', { id: 'ug-status', value: expense?.status || 'gepland' },
       STATUSSEN.map((s) => maak('option', { value: s }, s[0].toUpperCase() + s.slice(1))));
-    const doorWie = maak('select', { id: 'ug-door', value: expense?.betaald_door || '' }, maak('option', { value: '' }, '—'),
-      maak('option', { value: 'Eric' }, 'Eric'), maak('option', { value: 'Ilse' }, 'Ilse'));
     const dagSel = maak('select', { id: 'ug-dag', value: expense?.day_id || '' }, maak('option', { value: '' }, '— geen dag —'),
       d.dagen.map((x) => maak('option', { value: x.id }, dagLabel(x))));
 
@@ -201,7 +205,7 @@ export async function toonBudget(el, staat) {
       if (!bedragNum || bedragNum <= 0) return toonFout('Vul een bedrag groter dan 0 in.');
       const velden = { omschrijving: omschrijving.value.trim() || null, bedrag: bedragNum, valuta: valuta.value,
         bedrag_eur: naarEur(bedragNum, valuta.value), categorie: categorie.value || null, status: statusSel.value,
-        betaald_door: doorWie.value || null, day_id: dagSel.value || null };
+        day_id: dagSel.value || null };
       try {
         if (expense) { await wijzig('expenses', expense.id, velden); Object.assign(expense, velden); }
         else d.expenses.push(await voegToe('expenses', { ...velden, trip_id: tripId() }));
@@ -211,7 +215,7 @@ export async function toonBudget(el, staat) {
       veld('ug-omschrijving', 'Omschrijving (optioneel)', omschrijving),
       maak('div', { class: 'rij' }, veld('ug-bedrag', 'Bedrag', bedrag), veld('ug-valuta', 'Valuta', valuta)),
       veld('ug-categorie', 'Categorie', categorie),
-      maak('div', { class: 'rij' }, veld('ug-status', 'Status', statusSel), veld('ug-door', 'Betaald door', doorWie)),
+      veld('ug-status', 'Status', statusSel),
       veld('ug-dag', 'Gekoppelde dag (optioneel)', dagSel), fout,
       maak('div', { class: 'knoppen' },
         maak('button', { type: 'submit', class: 'knop' }, 'Opslaan'),

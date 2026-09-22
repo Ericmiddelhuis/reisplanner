@@ -2,6 +2,7 @@
 import { lijst, voegToe, voegMeerToe, wijzig, verwijder, bewaarReis } from '../db.js';
 import { maak, dagTekst, datumVoor, geld } from '../util.js';
 import { opendialoog as opendlg, veld, plaatsDialoog } from '../dialogen.js';
+import { CATEGORIEEN } from '../categorieen.js';
 
 const AANTAL_DAGEN = 28;
 const DAGDELEN = [['ochtend', 'Ochtend'], ['middag', 'Middag'], ['avond', 'Avond']];
@@ -167,7 +168,8 @@ export async function toonDagen(el, staat) {
 
   function activiteitRegel(dag, a) {
     const plaats = plaatsNaam(a.place_id);
-    const meta = [a.tijd && a.tijd.slice(0, 5), plaats, a.kosten != null && geld(a.kosten)].filter(Boolean).join(' · ');
+    const meta = [a.tijd && a.tijd.slice(0, 5), plaats, a.kosten != null && geld(a.kosten), a.kosten != null && a.categorie]
+      .filter(Boolean).join(' · ');
     return maak('li', {}, maak('button', { type: 'button', class: 'activiteit',
       onclick: () => vraagActiviteit(dag, a) },
       maak('strong', {}, a.titel),
@@ -264,6 +266,8 @@ export async function toonDagen(el, staat) {
     const tijd = maak('input', { id: 'ac-tijd', type: 'time', value: activiteit?.tijd?.slice(0, 5) || '' });
     const kosten = maak('input', { id: 'ac-kosten', type: 'number', min: '0', step: '0.01', inputmode: 'decimal',
       value: activiteit?.kosten ?? '' });
+    const categorie = maak('select', { id: 'ac-categorie', value: activiteit?.categorie || '' },
+      maak('option', { value: '' }, '— geen —'), CATEGORIEEN.map((c) => maak('option', { value: c }, c)));
     const leeftijd = maak('input', { id: 'ac-leeftijd', type: 'number', min: '0', max: '18', inputmode: 'numeric',
       value: activiteit?.minimumleeftijd_kind ?? '' });
     const notitie = maak('textarea', { id: 'ac-notitie', rows: '2' }, activiteit?.notitie || '');
@@ -271,7 +275,7 @@ export async function toonDagen(el, staat) {
     const form = maak('form', { method: 'dialog', onsubmit: async (ev) => {
       ev.preventDefault();
       const velden = { titel: titel.value.trim(), dagdeel: deel.value, tijd: tijd.value || null, place_id: plaatsId,
-        kosten: kosten.value === '' ? null : Number(kosten.value),
+        kosten: kosten.value === '' ? null : Number(kosten.value), categorie: categorie.value || null,
         minimumleeftijd_kind: leeftijd.value === '' ? null : Number(leeftijd.value),
         notitie: notitie.value.trim() || null };
       try {
@@ -283,8 +287,9 @@ export async function toonDagen(el, staat) {
       veld('ac-titel', 'Titel', titel),
       maak('div', { class: 'rij' }, veld('ac-deel', 'Dagdeel', deel), veld('ac-tijd', 'Tijd (optioneel)', tijd)),
       plaatsKeuze('ac-plaats', 'Plaats', plaatsId, (id) => { plaatsId = id; }),
-      maak('div', { class: 'rij' }, veld('ac-kosten', 'Kosten (EUR)', kosten),
-        veld('ac-leeftijd', 'Minimumleeftijd kind (jaar)', leeftijd)),
+      maak('div', { class: 'rij' }, veld('ac-kosten', 'Kosten (EUR)', kosten), veld('ac-categorie', 'Categorie (voor Budget)', categorie)),
+      maak('p', { class: 'gedempt' }, 'Kosten met een categorie tellen als geplande uitgave mee bij Budget.'),
+      veld('ac-leeftijd', 'Minimumleeftijd kind (jaar)', leeftijd),
       veld('ac-notitie', 'Notitie', notitie), fout,
       maak('div', { class: 'knoppen' },
         maak('button', { type: 'submit', class: 'knop' }, 'Opslaan'),

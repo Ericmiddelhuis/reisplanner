@@ -113,6 +113,27 @@ test('geen letterlijke "null" op het scherm als er geen waarschuwing is', async 
   await expect(page.locator('.kaart').filter({ hasText: 'Overzicht' }).getByText('null', { exact: true })).toHaveCount(0);
 });
 
+test('activiteit met kosten en categorie uit Dagen telt mee bij Budget', async ({ page }) => {
+  const dagen = [{ id: 'd1', trip_id: REIS.id, dagnummer: 1, datum: '2027-07-10' }];
+  const activiteiten = [{ id: 'a1', trip_id: REIS.id, day_id: 'd1', titel: 'Dune 45', dagdeel: 'ochtend',
+    kosten: 60, categorie: "Parkgelden & safari's" }];
+  await opBudget(page, { days: dagen, activities: activiteiten });
+  await expect(page.getByText('Gepland: € 60,00')).toBeVisible();
+  const kaart = page.locator('.kaart', { has: page.getByRole('heading', { name: "Parkgelden & safari's" }) });
+  await expect(kaart.getByText('Afgeleid uit geplande en betaalde uitgaven: € 60,00')).toBeVisible();
+  await expect(kaart.getByText('Waarvan € 60,00 aan activiteiten uit Dagen.')).toBeVisible();
+  // De activiteit zelf staat niet als losse regel bij Uitgaven (die blijft beheerd via Dagen)
+  await expect(page.locator('#uitgaven')).not.toContainText('Dune 45');
+});
+
+test('geen "betaald door"-veld meer bij een uitgave', async ({ page }) => {
+  await opBudget(page);
+  await page.getByRole('button', { name: '+ Uitgave toevoegen' }).click();
+  const dlg = page.getByRole('dialog', { name: 'Nieuwe uitgave' });
+  await expect(dlg.getByLabel('Betaald door')).toHaveCount(0);
+  await expect(dlg.getByText('Eric', { exact: true })).toHaveCount(0);
+});
+
 test('uitgave bewerken en verwijderen', async ({ page }) => {
   const db = await opBudget(page, { expenses: [{ id: 'e1', trip_id: REIS.id, omschrijving: 'Tent', bedrag: 80,
     valuta: 'EUR', bedrag_eur: 80, categorie: 'Buffer', status: 'gepland', created_at: 't1' }] });

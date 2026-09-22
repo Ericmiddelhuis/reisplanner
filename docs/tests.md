@@ -86,3 +86,21 @@ Eenmalig eerst `supabase/stap4.sql` uitvoeren in de Supabase SQL-editor (tabel `
 - [ ] Een categorie op handmatig zetten, een bedrag invullen, en weer terug naar afgeleid.
 - [ ] Valutaschakelaar en wisselkoersen aanpassen; bedragen kloppen in NAD en BWP.
 - [ ] Wijziging van Eric (uitgave, begroting) verschijnt zonder herladen bij Ilse.
+
+## Stap 4, correctie (naar aanleiding van handmatig testen)
+
+Eenmalig `supabase/stap4b.sql` uitvoeren in de Supabase SQL-editor (kolom `activities.categorie`).
+
+1. Kosten van een activiteit (Dagen) telden niet mee bij Budget. Opgelost: een activiteit met kosten heeft nu ook
+   een categorie; die kosten tellen als "gepland" mee in de budgetbalk en bij de betreffende categorie. Ze blijven
+   beheerd via Dagen en staan niet als losse regel bij Uitgaven.
+2. "Betaald door" (Eric/Ilse) is verwijderd uit de uitgave-dialoog en de uitgavenlijst: geen onderscheid meer wie betaalde.
+
+### Automatisch (Playwright, geslaagd)
+- [x] Activiteit met kosten en categorie telt mee in de budgetbalk en de juiste categoriekaart (`tests/budget.spec.js`).
+- [x] Geen "betaald door"-veld meer bij een uitgave (`tests/budget.spec.js`).
+- [x] Activiteit-dialoog slaat de gekozen categorie op (`tests/dagen.spec.js`).
+
+### Handmatig
+- [ ] `stap4b.sql` foutloos uitgevoerd.
+- [ ] Activiteit met kosten en een categorie toevoegen bij Dagen; bedrag verschijnt bij Budget.

@@ -78,11 +78,13 @@ test('activiteit per dagdeel toevoegen, bewerken en verwijderen', async ({ page 
   const dlg = page.getByRole('dialog', { name: 'Nieuwe activiteit' });
   await dlg.getByLabel('Titel').fill('Dune 45');
   await dlg.getByLabel('Kosten (EUR)').fill('25');
+  await dlg.getByLabel('Categorie (voor Budget)').selectOption("Parkgelden & safari's");
   await dlg.getByLabel('Minimumleeftijd kind (jaar)').fill('6');
   await dlg.getByRole('button', { name: 'Opslaan' }).click();
   await expect(middag.getByText('Dune 45')).toBeVisible();
   await expect(middag.getByText('Vanaf 6 jaar')).toBeVisible();
-  expect(db.activities[0]).toMatchObject({ titel: 'Dune 45', dagdeel: 'middag', kosten: 25, minimumleeftijd_kind: 6 });
+  expect(db.activities[0]).toMatchObject({ titel: 'Dune 45', dagdeel: 'middag', kosten: 25,
+    categorie: "Parkgelden & safari's", minimumleeftijd_kind: 6 });
 
   await middag.getByText('Dune 45').click();
   const bew = page.getByRole('dialog', { name: 'Activiteit bewerken' });

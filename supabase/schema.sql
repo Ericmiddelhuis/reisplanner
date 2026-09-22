@@ -90,6 +90,10 @@ create table if not exists activities (
   tijd time,
   place_id uuid references places(id) on delete set null,
   kosten numeric(12,2),
+  -- categorie (zelfde lijst als expenses.categorie): kosten met een categorie tellen mee bij Budget
+  categorie text check (categorie in (
+    'Vluchten','4x4-huurauto & brandstof','Lodges & campings','Parkgelden & safari''s',
+    'Eten & boodschappen','Visum/grens & verzekering','Buffer')),
   minimumleeftijd_kind int,
   notitie text,
   created_at timestamptz not null default now(),
