@@ -31,4 +31,5 @@ export function datumVoor(startdatum, dagnummer) {
   return new Date(Date.UTC(j, m - 1, d + dagnummer - 1)).toISOString().slice(0, 10);
 }
 
-export const geld = (n) => new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(n);
+export const geldIn = (n, valuta = 'EUR') => new Intl.NumberFormat('nl-NL', { style: 'currency', currency: valuta }).format(n);
+export const geld = (n) => geldIn(n, 'EUR');

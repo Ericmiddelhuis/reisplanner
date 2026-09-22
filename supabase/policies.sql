@@ -68,7 +68,7 @@ create policy members_delete on trip_members for delete to authenticated using (
 do $$
 declare t text;
 begin
-  foreach t in array array['places','days','bookings','activities','legs','expenses',
+  foreach t in array array['places','days','bookings','activities','legs','expenses','budgetten',
     'tasks','links','packing_items','documents'] loop
     execute format('alter table %I enable row level security', t);
     execute format('drop policy if exists %I on %I', t || '_leden', t);

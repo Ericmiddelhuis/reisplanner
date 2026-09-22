@@ -62,3 +62,27 @@ Eenmalig eerst `supabase/stap3.sql` uitvoeren in de Supabase SQL-editor (kolom `
 - [x] Marker verslepen slaat de nieuwe plek op en berekent de routes opnieuw.
 - [x] Max. rijuren per dag aanpassen bij Meer verandert de waarschuwingen.
 - [x] Wijziging van Eric (plaats/etappe) verschijnt zonder herladen bij Ilse.
+
+## Stap 4 – Budgetplanner
+
+Eenmalig eerst `supabase/stap4.sql` uitvoeren in de Supabase SQL-editor (tabel `budgetten`).
+
+### Automatisch (Playwright, geslaagd; `tests/budget.spec.js`)
+- [x] Zonder totaalbudget of uitgaven: geen balk, wel een duidelijke melding.
+- [x] Uitgave toevoegen telt mee in de budgetbalk en bij de juiste categorie.
+- [x] Uitgave in NAD/BWP wordt correct naar EUR omgerekend en zo meegeteld.
+- [x] Categorie omschakelen tussen handmatig begroot bedrag en afgeleid uit de uitgaven, in beide richtingen.
+- [x] Valutaschakelaar (EUR/NAD/BWP) toont bedragen omgerekend.
+- [x] Wisselkoers aanpassen werkt door in de weergave.
+- [x] Totaalbudget instellen toont het vrije bedrag; waarschuwing bij overschrijding.
+- [x] Uitgave bewerken en verwijderen.
+- [x] Geen letterlijke "null" op het scherm (regressietest voor een gevonden weergavefout).
+- [x] Telefoon: geen horizontaal scrollen.
+
+### Handmatig (echte Supabase)
+- [ ] `stap4.sql` foutloos uitgevoerd.
+- [ ] Totaalbudget instellen bij Budget; balk en "vrij"-bedrag kloppen.
+- [ ] Een paar uitgaven toevoegen in verschillende valuta en categorieën.
+- [ ] Een categorie op handmatig zetten, een bedrag invullen, en weer terug naar afgeleid.
+- [ ] Valutaschakelaar en wisselkoersen aanpassen; bedragen kloppen in NAD en BWP.
+- [ ] Wijziging van Eric (uitgave, begroting) verschijnt zonder herladen bij Ilse.

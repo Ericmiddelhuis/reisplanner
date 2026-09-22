@@ -94,7 +94,7 @@ async function start() {
     staat.reis = nieuw;
     if (staat.pad === 'overzicht') bijReisWijziging(root.querySelector('#hoofd'), nieuw);
   });
-  volgTabellen(['days', 'places', 'activities', 'bookings', 'legs'], () => staat.opWijziging?.());
+  volgTabellen(['days', 'places', 'activities', 'bookings', 'legs', 'expenses', 'budgetten'], () => staat.opWijziging?.());
   startRouter(toonScherm);
 }
 

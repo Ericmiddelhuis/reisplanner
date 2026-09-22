@@ -74,3 +74,17 @@ input, textarea, select {
   .kaartkolom { position: sticky; top: 16px; }
   #kaart { height: calc(100vh - 160px); min-height: 420px; }
 }
+
+/* Budget */
+.budgetbalk { display: flex; height: 20px; border-radius: 10px; overflow: hidden; background: var(--rand); margin-bottom: 10px; }
+.balk-betaald { background: var(--groen); display: block; }
+.balk-gepland { background: var(--gepland); display: block; }
+.legenda { list-style: none; display: flex; gap: 16px; flex-wrap: wrap; padding: 0; margin: 0; }
+.legenda li { display: flex; align-items: center; gap: 6px; }
+.stip { width: 12px; height: 12px; border-radius: 50%; display: inline-block; background: var(--rand); }
+.stip.betaald { background: var(--groen); }
+.stip.gepland { background: var(--gepland); }
+.mini-balk { height: 8px; border-radius: 4px; background: var(--rand); overflow: hidden; margin: 8px 0 4px; }
+.mini-vul { height: 100%; display: block; background: var(--groen); }
+.mini-vul.over { background: var(--oker); }
+#categorieen { display: grid; gap: 0; }

@@ -136,6 +136,20 @@ create table if not exists expenses (
   updated_by uuid references auth.users(id)
 );
 
+-- Begroting per categorie. bedrag = null betekent: afgeleid uit de geplande/betaalde uitgaven van die categorie.
+create table if not exists budgetten (
+  id uuid primary key default gen_random_uuid(),
+  trip_id uuid not null references trips(id) on delete cascade,
+  categorie text not null check (categorie in (
+    'Vluchten','4x4-huurauto & brandstof','Lodges & campings','Parkgelden & safari''s',
+    'Eten & boodschappen','Visum/grens & verzekering','Buffer')),
+  bedrag numeric(12,2),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  updated_by uuid references auth.users(id),
+  unique (trip_id, categorie)
+);
+
 create table if not exists tasks (
   id uuid primary key default gen_random_uuid(),
   trip_id uuid not null references trips(id) on delete cascade,
@@ -206,7 +220,7 @@ do $$
 declare t text;
 begin
   foreach t in array array['trips','trip_members','places','days','bookings','activities',
-    'legs','expenses','tasks','links','packing_items','documents'] loop
+    'legs','expenses','budgetten','tasks','links','packing_items','documents'] loop
     execute format('drop trigger if exists audit on %I', t);
     execute format('create trigger audit before insert or update on %I
                     for each row execute function set_audit()', t);
@@ -224,7 +238,7 @@ do $$
 declare t text;
 begin
   foreach t in array array['trips','trip_members','places','days','bookings','activities',
-    'legs','expenses','tasks','links','packing_items','documents'] loop
+    'legs','expenses','budgetten','tasks','links','packing_items','documents'] loop
     begin
       execute format('alter publication supabase_realtime add table %I', t);
     exception when duplicate_object then null;  -- stond er al in
