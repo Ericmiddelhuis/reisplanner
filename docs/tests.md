@@ -117,3 +117,23 @@ Brandstofkosten bij een etappe tellen nu mee in de budgetbalk en altijd bij de c
 
 ### Handmatig
 - [x] Brandstofkosten invullen bij een etappe (Route); bedrag verschijnt bij Budget onder 4x4-huurauto & brandstof.
+
+## Stap 5 – To-do-lijst
+
+`meer.js` is herschreven naar dezelfde opzet als de andere schermen (geen inhoudelijke wijziging aan
+reisinstellingen/leden/back-up, wel gecontroleerd met een regressietest).
+
+### Automatisch (Playwright, geslaagd; `tests/meer.spec.js`)
+- [x] Reisinstellingen nog steeds bruikbaar (regressie na het herschrijven van het scherm).
+- [x] Standaardfilter toont alleen open taken; Klaar en Alle werken.
+- [x] Taak toevoegen met deadline, toewijzing, categorie en gekoppelde dag.
+- [x] Taak afvinken via het selectievakje, zonder de bewerk-dialoog te openen.
+- [x] Verlopen taak (deadline in het verleden, niet klaar) krijgt een badge; zonder deadline geen badge.
+- [x] Taak bewerken en verwijderen.
+- [x] Telefoon: geen horizontaal scrollen.
+
+### Handmatig (echte Supabase)
+- [ ] De vier standaardtaken uit `seed.sql` (visum, grensvergunning, malaria, paspoorten) zijn zichtbaar bij Meer.
+- [ ] Taak toevoegen, toewijzen aan Eric of Ilse, en afvinken.
+- [ ] Wijziging van Eric (nieuwe taak, afvinken) verschijnt zonder herladen bij Ilse.
+- [ ] Reisinstellingen, leden uitnodigen en export/import werken nog steeds na het herschrijven van het scherm.

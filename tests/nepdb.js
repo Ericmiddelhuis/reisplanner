@@ -7,7 +7,7 @@ export const REIS = { id: '11111111-1111-1111-1111-111111111111', naam: 'Testrei
   koersen: { EUR: 1, NAD: 0.05, BWP: 0.07 }, created_at: '2027-01-01T00:00:00Z' };
 
 export async function nepSupabase(page, begin = {}) {
-  const db = { days: [], places: [], activities: [], bookings: [], legs: [], expenses: [], budgetten: [], ...begin };
+  const db = { days: [], places: [], activities: [], bookings: [], legs: [], expenses: [], budgetten: [], tasks: [], ...begin };
   const sessie = { access_token: 'x', refresh_token: 'x', token_type: 'bearer', expires_in: 3600,
     expires_at: Math.floor(Date.now() / 1000) + 3600,
     user: { id: '22222222-2222-2222-2222-222222222222', email: 'test@example.com', aud: 'authenticated' } };

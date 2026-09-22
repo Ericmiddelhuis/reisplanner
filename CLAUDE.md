@@ -148,3 +148,4 @@ Sla geen paspoort-, visum- of creditcardnummers op in de database. Alleen type, 
 - Stap 2: klaar
 - Stap 3: klaar
 - Stap 4: klaar
+- Stap 5: gebouwd en automatisch getest; handmatige test nog te doen (zie docs/tests.md)

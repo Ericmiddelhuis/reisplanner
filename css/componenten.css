@@ -88,3 +88,11 @@ input, textarea, select {
 .mini-vul { height: 100%; display: block; background: var(--groen); }
 .mini-vul.over { background: var(--oker); }
 #categorieen { display: grid; gap: 0; }
+
+/* To-do (Meer) */
+.taak-regel { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.taak-regel .vinkje { margin-bottom: 0; }
+.taak-titel { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left;
+  min-height: 44px; padding: 8px 14px; background: var(--kaart); border: 1px solid var(--rand); border-radius: 14px;
+  font: inherit; color: var(--inkt); cursor: pointer; }
+.doorgestreept { text-decoration: line-through; color: var(--gedempt); }
