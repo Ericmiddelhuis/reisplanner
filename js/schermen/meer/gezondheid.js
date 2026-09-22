@@ -5,7 +5,7 @@ import { maak, terugHeader } from '../../util.js';
 export async function toonGezondheid(el, staat) {
   const status = maak('p', { class: 'melding verborgen', role: 'status' });
   const tekst = maak('textarea', { id: 'gz-tekst', rows: '10',
-    placeholder: 'Bijv.:\nEric: geen bijzonderheden.\nIlse: penicilline-allergie.\nKind: pinda-allergie, EpiPen in de rugzak.\n\nMalariapreventie: welk middel, vanaf welke datum.\nVaccinaties: welke, wanneer.' },
+    placeholder: 'Bijv.:\nEric: geen bijzonderheden.\nIlse: penicilline-allergie.\nMilo: pinda-allergie, EpiPen in de rugzak.\n\nMalariapreventie: welk middel, vanaf welke datum.\nVaccinaties: welke, wanneer.' },
     staat.reis.gezondheid || '');
 
   el.replaceChildren(...terugHeader('Gezondheid'), status,

@@ -3,7 +3,7 @@ import { lijst, voegToe, wijzig, verwijder } from '../../db.js';
 import { maak, dagTekst, terugHeader } from '../../util.js';
 import { opendialoog, veld } from '../../dialogen.js';
 
-export const PERSONEN = ['Eric', 'Ilse', 'Kind'];
+export const PERSONEN = ['Eric', 'Ilse', 'Milo'];
 export const DOCUMENT_TYPEN = [['paspoort', 'Paspoort'], ['visum', 'Visum'], ['rijbewijs', 'Rijbewijs'], ['verzekering', 'Verzekering']];
 // Namibië (en veel andere landen) eisen vaak een paspoort dat bij aankomst nog minstens 6 maanden geldig is
 const BINNENKORT_DAGEN = 183;

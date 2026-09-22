@@ -199,10 +199,10 @@ nodig omdat deze stap zes onderdelen toevoegt; alles op één pagina was niet me
 - [x] Telefoon: geen horizontaal scrollen, op alle nieuwe schermen.
 
 ### Handmatig (echte Supabase)
-- [ ] `stap7.sql` foutloos uitgevoerd.
-- [ ] Boeking toevoegen, en de automatisch aangemaakte overnachtingsboekingen aanvullen met kosten/bevestiging.
-- [ ] Paklijst gebruiken voor de hele reis.
-- [ ] Een document per persoon toevoegen (geen nummers!) en de verval-badges controleren met echte datums.
-- [ ] Gezondheid en Noodinfo invullen; Noodinfo vóór vertrek zelf controleren op actuele nummers.
-- [ ] Reisdagboek bijhouden tijdens/na (een deel van) de reis.
-- [ ] Wijziging van Eric bij elk nieuw onderdeel verschijnt zonder herladen bij Ilse.
+- [x] `stap7.sql` foutloos uitgevoerd.
+- [x] Boeking toevoegen, en de automatisch aangemaakte overnachtingsboekingen aanvullen met kosten/bevestiging.
+- [x] Paklijst gebruiken voor de hele reis.
+- [x] Een document per persoon toevoegen (geen nummers!) en de verval-badges controleren met echte datums.
+- [x] Gezondheid en Noodinfo invullen; Noodinfo vóór vertrek zelf controleren op actuele nummers.
+- [x] Reisdagboek bijhouden tijdens/na (een deel van) de reis.
+- [x] Wijziging van Eric bij elk nieuw onderdeel verschijnt zonder herladen bij Ilse.

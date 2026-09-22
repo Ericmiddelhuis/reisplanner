@@ -28,13 +28,13 @@ test('item toevoegen met groep en voor wie', async ({ page }) => {
   const dlg = page.getByRole('dialog', { name: 'Nieuw item' });
   await dlg.getByLabel('Titel').fill('Warme trui');
   await dlg.getByLabel('Groep (optioneel)').fill('Kleding');
-  await dlg.getByLabel('Voor wie').selectOption('Kind');
+  await dlg.getByLabel('Voor wie').selectOption('Milo');
   await dlg.getByRole('button', { name: 'Opslaan' }).click();
   await expect.poll(() => db.packing_items.length).toBe(1);
-  expect(db.packing_items[0]).toMatchObject({ titel: 'Warme trui', groep: 'Kleding', voor_wie: 'Kind', ingepakt: false });
+  expect(db.packing_items[0]).toMatchObject({ titel: 'Warme trui', groep: 'Kleding', voor_wie: 'Milo', ingepakt: false });
   const regel = page.locator('li', { hasText: 'Warme trui' });
   await expect(regel).toContainText('Kleding');
-  await expect(regel).toContainText('Kind');
+  await expect(regel).toContainText('Milo');
 });
 
 test('item afvinken via het selectievakje', async ({ page }) => {

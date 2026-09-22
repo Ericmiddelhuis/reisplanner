@@ -3,7 +3,7 @@ import { lijst, voegToe, wijzig, verwijder } from '../../db.js';
 import { maak, terugHeader } from '../../util.js';
 import { opendialoog, veld } from '../../dialogen.js';
 
-export const VOOR_WIE = ['Eric', 'Ilse', 'Kind', 'Iedereen'];
+export const VOOR_WIE = ['Eric', 'Ilse', 'Milo', 'Iedereen'];
 const FILTERS = [['open', 'Nog inpakken'], ['ingepakt', 'Ingepakt'], ['alle', 'Alle']];
 
 export async function toonPaklijst(el, staat) {

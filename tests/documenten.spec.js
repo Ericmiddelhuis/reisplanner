@@ -34,9 +34,9 @@ test('verlopen paspoort krijgt een badge', async ({ page }) => {
 });
 
 test('paspoort dat over 3 maanden verloopt waarschuwt (Namibië eist 6 maanden geldigheid)', async ({ page }) => {
-  await opDocumenten(page, { documents: [{ id: 'd1', trip_id: REIS.id, persoon: 'Kind', type: 'paspoort',
+  await opDocumenten(page, { documents: [{ id: 'd1', trip_id: REIS.id, persoon: 'Milo', type: 'paspoort',
     vervaldatum: vandaagPlusDagen(90) }] });
-  await expect(page.locator('li', { hasText: 'Kind' }).getByText('Verloopt binnenkort')).toBeVisible();
+  await expect(page.locator('li', { hasText: 'Milo' }).getByText('Verloopt binnenkort')).toBeVisible();
 });
 
 test('paspoort dat nog jaren geldig is krijgt geen badge', async ({ page }) => {

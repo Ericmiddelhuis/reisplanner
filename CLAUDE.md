@@ -12,7 +12,7 @@ Gebruikers: precies twee (Eric en Ilse), op laptop én telefoon, evenveel. Beide
 
 - Bestemming: Namibië en Botswana, self-drive.
 - Periode: zomer 2027 (juli/augustus), 4 weken = 28 dagen. Exacte datums nog niet bekend: startdatum instelbaar, de app rekent dagen en datums daaruit af.
-- Reizigers: drie personen: Eric, Ilse en hun kind. Paklijst, documenten en activiteiten kunnen per persoon worden toegewezen.
+- Reizigers: drie personen: Eric, Ilse en hun kind Milo. Paklijst, documenten en activiteiten kunnen per persoon worden toegewezen.
 - Totaalbudget: nog vast te stellen, instelbaar in de app.
 - Let op: de Nederlandse zomer is daar het droge winterseizoen, met warme dagen en koude nachten (belangrijk voor paklijst en kampeerders).
 - `supabase/seed.sql` maakt een voorbeeldreis "Namibië & Botswana 2027" aan met 28 lege dagen en de standaard-taken (visum Namibië, grensvergunning huurauto, malariapreventie, paspoorten controleren).
@@ -154,4 +154,4 @@ Sla geen paspoort-, visum- of creditcardnummers op in de database. Alleen type, 
 - Stap 4: klaar
 - Stap 5: klaar
 - Stap 6: klaar
-- Stap 7: gebouwd en automatisch getest; handmatige test nog te doen (eerst supabase/stap7.sql uitvoeren, zie docs/tests.md)
+- Stap 7: klaar

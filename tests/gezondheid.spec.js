@@ -7,12 +7,12 @@ test('tekst opslaan en na herladen nog aanwezig', async ({ page }) => {
   await nepSupabase(page);
   await page.goto('/#/meer/gezondheid');
   await expect(page.getByRole('heading', { level: 1, name: 'Gezondheid' })).toBeVisible();
-  await page.locator('#gz-tekst').fill('Kind: pinda-allergie, EpiPen in de rugzak.');
+  await page.locator('#gz-tekst').fill('Milo: pinda-allergie, EpiPen in de rugzak.');
   await page.getByRole('button', { name: 'Opslaan' }).click();
-  await expect.poll(() => REIS.gezondheid).toBe('Kind: pinda-allergie, EpiPen in de rugzak.');
+  await expect.poll(() => REIS.gezondheid).toBe('Milo: pinda-allergie, EpiPen in de rugzak.');
 
   await page.reload();
-  await expect(page.locator('#gz-tekst')).toHaveValue('Kind: pinda-allergie, EpiPen in de rugzak.');
+  await expect(page.locator('#gz-tekst')).toHaveValue('Milo: pinda-allergie, EpiPen in de rugzak.');
 });
 
 test('rooktest telefoon', async ({ page }) => {
