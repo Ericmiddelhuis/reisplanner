@@ -51,15 +51,17 @@ docs/       (tests.md, beslissingen.md)
 tests/      (Playwright-tests)
 ```
 
-## Schermen (uit het goedgekeurde ontwerp)
+## Schermen (bijgewerkt na het goedgekeurde ontwerp)
 
-Telefoon: onderste navigatiebalk met vijf tabbladen.
+Oorspronkelijk ontwerp had vijf tabbladen met To-do onder "Meer". In stap 5 is To-do een eigen tabblad geworden
+(gebruikerswens), dus nu zes tabbladen. Telefoon: onderste navigatiebalk.
 
 1. **Overzicht** – countdown tot vertrek, budgetbalk (betaald / gepland / vrij), tellers (dagen gepland, open taken, te boeken), eerstvolgende taken.
 2. **Dagen** – tijdlijn per week (week-chips), per dag: dagnummer, datum, titel, plaats, overnachting met boekingsstatus, activiteiten per dagdeel (ochtend/middag/avond), gekoppelde links/taken/kosten, notitie.
 3. **Route** – kaart met stops en etappes, lijst van etappes met afstand, rijtijd, wegtype en een waarschuwing bij lange rijdagen.
 4. **Budget** – totaalbudget, per categorie begroot vs. betaald, valutaschakelaar EUR / NAD / BWP, uitgave toevoegen.
-5. **Meer** – To-do & paklijst, Boekingen, Links, Documenten, Gezondheid, Reisdagboek, Noodinfo (offline).
+5. **To-do** – taken met deadline, toewijzing (Eric/Ilse), categorie en optionele koppeling aan een dag; filter op open/klaar/alle.
+6. **Meer** – Paklijst, Boekingen, Links, Documenten, Gezondheid, Reisdagboek, Noodinfo (offline).
 
 Laptop: zijbalk links met dezelfde onderdelen; bij Dagen staan daglijst, kaart en dagdetails naast elkaar.
 

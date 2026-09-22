@@ -4,6 +4,7 @@ export const ROUTES = [
   { pad: 'dagen', titel: 'Dagen' },
   { pad: 'route', titel: 'Route' },
   { pad: 'budget', titel: 'Budget' },
+  { pad: 'todo', titel: 'To-do' },
   { pad: 'meer', titel: 'Meer' },
 ];
 

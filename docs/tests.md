@@ -137,3 +137,13 @@ reisinstellingen/leden/back-up, wel gecontroleerd met een regressietest).
 - [ ] Taak toevoegen, toewijzen aan Eric of Ilse, en afvinken.
 - [ ] Wijziging van Eric (nieuwe taak, afvinken) verschijnt zonder herladen bij Ilse.
 - [ ] Reisinstellingen, leden uitnodigen en export/import werken nog steeds na het herschrijven van het scherm.
+
+## Stap 5, correctie: To-do als eigen tabblad
+
+Op verzoek is To-do losgetrokken van Meer en een eigen tabblad geworden (zes tabbladen in plaats van vijf).
+`js/schermen/todo.js` bevat nu de to-do-logica; `js/schermen/meer.js` bevat weer alleen reisinstellingen, leden en back-up.
+
+### Automatisch (Playwright, geslaagd)
+- [x] To-do is een eigen tabblad met eigen route (`tests/todo.spec.js`, verplaatst uit `tests/meer.spec.js`).
+- [x] Navigatie telt zes tabbladen, inclusief To-do, op telefoon en laptop (`tests/rook.spec.js`).
+- [x] Meer bevat geen to-do meer; reisinstellingen werken nog (`tests/meer.spec.js`).

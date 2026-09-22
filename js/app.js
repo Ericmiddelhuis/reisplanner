@@ -7,9 +7,10 @@ import { toonOverzicht, bijReisWijziging } from './schermen/overzicht.js';
 import { toonDagen } from './schermen/dagen.js';
 import { toonRoute } from './schermen/route.js';
 import { toonBudget } from './schermen/budget.js';
+import { toonTodo } from './schermen/todo.js';
 import { toonMeer } from './schermen/meer.js';
 
-const SCHERMEN = { overzicht: toonOverzicht, dagen: toonDagen, route: toonRoute, budget: toonBudget, meer: toonMeer };
+const SCHERMEN = { overzicht: toonOverzicht, dagen: toonDagen, route: toonRoute, budget: toonBudget, todo: toonTodo, meer: toonMeer };
 const staat = { reis: null, pad: 'overzicht', opWijziging: null };
 const root = document.getElementById('root');
 

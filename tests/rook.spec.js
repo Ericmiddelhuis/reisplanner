@@ -23,7 +23,7 @@ test('overzicht toont reisnaam en countdown', async ({ page }) => {
   await expect(page.locator('#notitie-tekst')).toHaveText('Hallo Ilse');
 });
 
-const schermen = ['Overzicht', 'Dagen', 'Route', 'Budget', 'Meer'];
+const schermen = ['Overzicht', 'Dagen', 'Route', 'Budget', 'To-do', 'Meer'];
 
 for (const [naam, breedte, hoogte] of [['telefoon', 390, 844], ['laptop', 1280, 800]]) {
   test(`navigatie werkt op ${naam}`, async ({ page }) => {
@@ -31,7 +31,7 @@ for (const [naam, breedte, hoogte] of [['telefoon', 390, 844], ['laptop', 1280, 
     await metNepSessie(page);
     await page.goto('/');
     const nav = page.getByRole('navigation', { name: 'Hoofdmenu' });
-    await expect(nav.getByRole('link')).toHaveCount(5);
+    await expect(nav.getByRole('link')).toHaveCount(6);
     for (const s of schermen) {
       await nav.getByRole('link', { name: s }).click();
       await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
