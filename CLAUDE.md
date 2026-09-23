@@ -165,4 +165,4 @@ Sla geen paspoort-, visum- of creditcardnummers op in de database. Alleen type, 
 - Stap 5: klaar
 - Stap 6: klaar
 - Stap 7: klaar
-- Stap 8: gebouwd en automatisch getest; handmatige eindtest op beide telefoons nog te doen, inclusief wachtwoord instellen (zie docs/tests.md)
+- Stap 8: klaar. Alle stappen uit het stappenplan zijn afgerond.

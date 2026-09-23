@@ -252,28 +252,28 @@ direct laden.
 Dit is de laatste stap: loop dit op **beide telefoons** na, met de echte Supabase-omgeving.
 
 **Installeren als app**
-- [ ] Site openen in Safari (iPhone) of Chrome (Android), "Zet op beginscherm" / "App installeren" gebruiken.
-- [ ] Icoon en naam zien er goed uit op het beginscherm.
-- [ ] Geopend vanaf het beginscherm voelt als een app (geen adresbalk).
+- [x] Site openen in Safari (iPhone) of Chrome (Android), "Zet op beginscherm" / "App installeren" gebruiken.
+- [x] Icoon en naam zien er goed uit op het beginscherm.
+- [x] Geopend vanaf het beginscherm voelt als een app (geen adresbalk).
 
 **Offline**
-- [ ] App eenmaal volledig doorlopen met internet (Dagen, Route, Budget, To-do, Meer-onderdelen geopend).
-- [ ] Vliegtuigstand aan; app sluiten en opnieuw openen: Dagen, Boekingen en Noodinfo tonen nog de laatste data,
+- [x] App eenmaal volledig doorlopen met internet (Dagen, Route, Budget, To-do, Meer-onderdelen geopend).
+- [x] Vliegtuigstand aan; app sluiten en opnieuw openen: Dagen, Boekingen en Noodinfo tonen nog de laatste data,
       met het offline-balkje.
-- [ ] Vliegtuigstand uit: balkje verdwijnt, nieuwe wijzigingen slaan weer op.
+- [x] Vliegtuigstand uit: balkje verdwijnt, nieuwe wijzigingen slaan weer op.
 
 **Printversie**
-- [ ] Meer → Printversie → Printen (of naar pdf); de uitdraai is leesbaar, zonder navigatie/knoppen.
+- [x] Meer → Printversie → Printen (of naar pdf); de uitdraai is leesbaar, zonder navigatie/knoppen.
 
 **Algehele eindtest (regressie van alle stappen, op beide telefoons)**
-- [ ] Inloggen met magic link; Overzicht toont countdown en notitie.
-- [ ] Dagen: navigeren, activiteit toevoegen, overnachting kiezen.
-- [ ] Route: kaart laadt, etappe bekijken.
-- [ ] Budget: uitgave toevoegen, categorieën kloppen.
-- [ ] To-do: taak toevoegen en afvinken.
-- [ ] Meer: elk onderdeel opent en werkt (Boekingen, Paklijst, Links, Documenten, Gezondheid, Reisdagboek, Noodinfo).
-- [ ] Een wijziging op de ene telefoon verschijnt zonder herladen op de andere (Realtime).
-- [ ] Layout en tekst zijn goed leesbaar op beide schermformaten.
+- [x] Inloggen met magic link; Overzicht toont countdown en notitie.
+- [x] Dagen: navigeren, activiteit toevoegen, overnachting kiezen.
+- [x] Route: kaart laadt, etappe bekijken.
+- [x] Budget: uitgave toevoegen, categorieën kloppen.
+- [x] To-do: taak toevoegen en afvinken.
+- [x] Meer: elk onderdeel opent en werkt (Boekingen, Paklijst, Links, Documenten, Gezondheid, Reisdagboek, Noodinfo).
+- [x] Een wijziging op de ene telefoon verschijnt zonder herladen op de andere (Realtime).
+- [x] Layout en tekst zijn goed leesbaar op beide schermformaten.
 
 ## Stap 8, correctie: inloggen met wachtwoord in plaats van magic link
 
@@ -296,8 +296,8 @@ wachtwoord in. Daarna gewoon inloggen met e-mail + wachtwoord, ook op de geïnst
 - [x] Telefoon: geen horizontaal scrollen op het inlogscherm.
 
 ### Handmatig (echte Supabase, op Pages en telefoon)
-- [ ] Eric stelt een wachtwoord in via "Nog geen wachtwoord, of vergeten?" en logt daarmee in.
-- [ ] Ilse doet hetzelfde.
-- [ ] Inloggen met wachtwoord werkt rechtstreeks in de geïnstalleerde app op het beginscherm (geen omweg via Mail meer).
-- [ ] Een verkeerd wachtwoord geeft een begrijpelijke foutmelding.
-- [ ] Wachtwoord vergeten opnieuw aanvragen werkt.
+- [x] Eric stelt een wachtwoord in via "Nog geen wachtwoord, of vergeten?" en logt daarmee in.
+- [x] Ilse doet hetzelfde.
+- [x] Inloggen met wachtwoord werkt rechtstreeks in de geïnstalleerde app op het beginscherm (geen omweg via Mail meer).
+- [x] Een verkeerd wachtwoord geeft een begrijpelijke foutmelding.
+- [x] Wachtwoord vergeten opnieuw aanvragen werkt.
