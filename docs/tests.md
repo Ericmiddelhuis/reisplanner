@@ -337,7 +337,7 @@ Het oude tekstveld `trips.notitie` blijft ongebruikt in de database staan; niet 
 - [x] Een lege notitie kan niet worden opgeslagen.
 
 ### Handmatig (echte Supabase)
-- [ ] `stap9.sql` foutloos uitgevoerd.
-- [ ] Notitie toevoegen, een tweede toevoegen; beide blijven staan met een datumstempel.
-- [ ] Een bestaande notitie bewerken via de knop erop.
-- [ ] Wijziging van Eric (nieuwe of bewerkte notitie) verschijnt zonder herladen bij Ilse.
+- [x] `stap9.sql` foutloos uitgevoerd.
+- [x] Notitie toevoegen, een tweede toevoegen; beide blijven staan met een datumstempel.
+- [x] Een bestaande notitie bewerken via de knop erop.
+- [x] Wijziging van Eric (nieuwe of bewerkte notitie) verschijnt zonder herladen bij Ilse.
