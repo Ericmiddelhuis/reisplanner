@@ -1,17 +1,60 @@
 // Supabase-client en gedeelde opslag
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
+import { toonOfflineBalk, verbergOfflineBalk } from './offline.js';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ---------------------------------------------------------------
+// Offline: laatst opgehaalde data bewaren in localStorage, zodat dagplanning, boekingen en
+// noodinfo ook zonder bereik te zien zijn (belangrijk onderweg in Namibië/Botswana).
+// Bij een geslaagde ophaling wordt de cache bijgewerkt; bij een mislukte (geen netwerk) valt de
+// app terug op de laatste cache, met een balkje erbij. Een echte API-fout (bijv. geen toegang meer)
+// wordt nooit verborgen achter verouderde cache: alleen een netwerkfout leidt tot de terugval.
+// ---------------------------------------------------------------
+function leesCache(sleutel) {
+  try { return JSON.parse(localStorage.getItem(sleutel)); } catch { return null; }
+}
+function schrijfCache(sleutel, data) {
+  try { localStorage.setItem(sleutel, JSON.stringify({ data, bijgewerkt: new Date().toISOString() })); }
+  catch { /* localStorage kan vol of uitgeschakeld zijn: dan geen offline-cache, verder geen probleem */ }
+}
+const dagTijd = (iso) => new Date(iso).toLocaleString('nl-NL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+// Supabase-js probeert bij een netwerkfout intern een paar keer opnieuw (~7 seconden) voor het opgeeft.
+// Dat is te traag voor onderweg: na deze tijdslimiet behandelen we het alvast als "geen netwerk".
+// De oorspronkelijke aanvraag loopt op de achtergrond gewoon door; het resultaat ervan wordt dan genegeerd.
+function metTijdslimiet(belofte, ms = 6000) {
+  return Promise.race([
+    belofte,
+    new Promise((op) => setTimeout(() => op({ data: null, error: { message: 'Geen antwoord binnen de tijd' }, status: 0 }), ms)),
+  ]);
+}
+
+// Voert `ophalen` uit; supabase-js gooit nooit een fout, maar geeft altijd {data, error, status} terug.
+// status 0 betekent: geen antwoord van de server gekregen (waarschijnlijk geen netwerk) — dan valt de app
+// terug op de cache onder `sleutel`. Een echte serverfout (wél een status, bijv. 403 bij geen toegang meer)
+// wordt altijd getoond, nooit verborgen achter verouderde cache. Een succesvolle ophaling ververst de cache.
+async function metCache(sleutel, ophalen) {
+  const { data, error, status } = await metTijdslimiet(ophalen());
+  if (error) {
+    if (!status) {
+      const cache = leesCache(sleutel);
+      if (cache) { toonOfflineBalk(`Offline — laatst opgehaald op ${dagTijd(cache.bijgewerkt)}.`); return cache.data; }
+    }
+    throw error;
+  }
+  schrijfCache(sleutel, data);
+  verbergOfflineBalk();
+  return data;
+}
 
 // Tabellen die bij export/import horen, in volgorde van afhankelijkheid
 const TABELLEN = ['places', 'days', 'bookings', 'activities', 'legs', 'expenses', 'budgetten',
   'tasks', 'links', 'packing_items', 'documents'];
 
 export async function laadReizen() {
-  const { data, error } = await supabase.from('trips').select('*').order('created_at');
-  if (error) throw error;
-  return data;
+  return metCache('reisplanner:reizen', () => supabase.from('trips').select('*').order('created_at'));
 }
 
 export async function maakReis(naam, startdatum) {
@@ -76,9 +119,8 @@ export async function importeerAlles(tripId, bestand) {
 // Algemene hulpfuncties voor de tabellen van een reis
 // ---------------------------------------------------------------
 export async function lijst(tabel, tripId, sorteer = 'created_at') {
-  const { data, error } = await supabase.from(tabel).select('*').eq('trip_id', tripId).order(sorteer);
-  if (error) throw error;
-  return data;
+  return metCache(`reisplanner:${tripId}:${tabel}`,
+    () => supabase.from(tabel).select('*').eq('trip_id', tripId).order(sorteer));
 }
 
 export async function voegToe(tabel, rij) {

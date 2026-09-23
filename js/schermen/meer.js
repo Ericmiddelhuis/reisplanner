@@ -9,6 +9,7 @@ import { toonDocumenten } from './meer/documenten.js';
 import { toonGezondheid } from './meer/gezondheid.js';
 import { toonReisdagboek } from './meer/reisdagboek.js';
 import { toonNoodinfo } from './meer/noodinfo.js';
+import { toonPrint } from './meer/print.js';
 import { toonLeden } from './meer/leden.js';
 import { toonBackup } from './meer/backup.js';
 
@@ -21,13 +22,14 @@ const ITEMS = [
   ['gezondheid', 'Gezondheid'],
   ['reisdagboek', 'Reisdagboek'],
   ['noodinfo', 'Noodinfo'],
+  ['print', 'Printversie'],
   ['leden', 'Leden'],
   ['backup', 'Back-up'],
 ];
 
 const SUBSCHERMEN = { instellingen: toonInstellingen, boekingen: toonBoekingen, paklijst: toonPaklijst, links: toonLinks,
   documenten: toonDocumenten, gezondheid: toonGezondheid, reisdagboek: toonReisdagboek, noodinfo: toonNoodinfo,
-  leden: toonLeden, backup: toonBackup };
+  print: toonPrint, leden: toonLeden, backup: toonBackup };
 
 export async function toonMeer(el, staat, pad = 'meer') {
   const sub = pad.split('/')[1];

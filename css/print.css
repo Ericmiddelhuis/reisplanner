@@ -1,0 +1,20 @@
+/* Alleen actief tijdens printen (zie index.html: <link media="print">).
+   Verbergt de navigatie en app-chrome; toont de printversie leesbaar in zwart-wit op papier. */
+#navigatie, .niet-printen, .melding, .offline-balk {
+  display: none !important;
+}
+body {
+  background: #fff;
+  color: #000;
+}
+.print-dag {
+  page-break-inside: avoid;
+  margin-bottom: 12pt;
+}
+.print-vrije-tekst {
+  white-space: pre-wrap;
+}
+a {
+  color: #000;
+  text-decoration: underline;
+}

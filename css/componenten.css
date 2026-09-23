@@ -111,3 +111,11 @@ input, textarea, select {
 .menu-item::after { content: '›'; color: var(--gedempt); font-size: 1.3rem; line-height: 1; }
 .terug-link { display: inline-block; margin-bottom: 8px; color: var(--groen); font-weight: 600; text-decoration: none; }
 .terug-link:hover { text-decoration: underline; }
+
+/* Offline-balkje (stap 8) */
+.offline-balk { background: var(--oker-licht); color: var(--oker-tekst); text-align: center;
+  padding: 8px 16px; font-weight: 600; font-size: .9rem; }
+
+/* Printversie (Meer) */
+.print-inhoud .print-dag { margin-bottom: 12px; }
+.print-vrije-tekst { white-space: pre-wrap; }

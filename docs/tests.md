@@ -206,3 +206,71 @@ nodig omdat deze stap zes onderdelen toevoegt; alles op één pagina was niet me
 - [x] Gezondheid en Noodinfo invullen; Noodinfo vóór vertrek zelf controleren op actuele nummers.
 - [x] Reisdagboek bijhouden tijdens/na (een deel van) de reis.
 - [x] Wijziging van Eric bij elk nieuw onderdeel verschijnt zonder herladen bij Ilse.
+
+## Stap 8 – Offline (PWA), printversie, prestaties, eindtest
+
+Geen nieuwe Supabase-migratie: deze stap voegt alleen frontend-bestanden toe (`manifest.json`, `sw.js`, `icons/`,
+`css/print.css`, `js/offline.js`) en een offline-cache in `js/db.js`.
+
+**Offline, hoe het werkt:**
+- `sw.js` cachet de app-schil (HTML/CSS/JS) zodat de app zelf ook zonder bereik opent. Reisdata (Supabase),
+  routes (OpenRouteService/Nominatim) en kaarttegels worden nooit door de service worker gecachet: die moeten
+  actueel zijn.
+- Elke geslaagde ophaling van dagen/boekingen/taken/enz. wordt apart in localStorage bewaard (`js/db.js`). Lukt een
+  ophaling niet (geen netwerk), dan valt het scherm terug op die laatste versie, met een balkje "Offline — laatst
+  opgehaald op ...". Een echte serverfout (bijv. geen toegang meer) wordt nooit verborgen achter oude cache.
+- Werkt pas nadat de app minstens één keer online is geopend op dat toestel.
+- Kaarten (Route) hebben altijd internet nodig voor de tegels; de etappelijst met afstand/rijtijd werkt wel offline.
+
+**Gevonden en opgelost tijdens het bouwen:**
+- Supabase-js probeert bij een netwerkfout intern een paar keer opnieuw (~7,5 seconden) voor het de fout teruggeeft.
+  Voor onderweg is dat te traag: er is een eigen tijdslimiet van 6 seconden toegevoegd, waarna de app alvast de
+  cache gebruikt.
+- Een geregistreerde service worker onderschepte in de Playwright-tests de nagemaakte netwerkverzoeken. Opgelost
+  met een `navigator.webdriver`-check in `app.js`: in geautomatiseerd geteste browsers registreert de service
+  worker zich niet; bij Eric en Ilse (geen webdriver) gebeurt dat gewoon wel (zie `tests/pwa.spec.js`).
+
+**Printversie:** Meer → Printversie (`#/meer/print`) toont dagplanning, boekingen, gezondheid en noodinfo samengevat
+op één pagina, met een "Printen"-knop. `css/print.css` verbergt bij het printen de navigatie en knoppen.
+
+**Prestaties:** preconnect toegevoegd voor cdn.jsdelivr.net (naast de al bestaande voor Google Fonts); Leaflet werd
+al lazy geladen (alleen bij bezoek aan Route, sinds stap 3); de service worker maakt herhaalde bezoeken vrijwel
+direct laden.
+
+### Automatisch (Playwright, geslaagd)
+- [x] Manifest, thema-kleur en iconen staan in de pagina en zijn opvraagbaar (`tests/pwa.spec.js`).
+- [x] `sw.js` bestaat en cachet nooit de reisdata- of kaart-API's (`tests/pwa.spec.js`).
+- [x] Service worker registreert zich in een echte (niet-webdriver) browser (`tests/pwa.spec.js`).
+- [x] Eerder geladen dagen blijven zichtbaar zonder netwerk, met een offline-melding; de melding verdwijnt weer
+      zodra het lukt (`tests/offline.spec.js`).
+- [x] Een echte serverfout wordt getoond, nooit verborgen achter verouderde cache (`tests/offline.spec.js`).
+- [x] Printversie toont dagplanning, boekingen, gezondheid en noodinfo; de printknop werkt (`tests/print.spec.js`).
+- [x] Telefoon: geen horizontaal scrollen op de printversie.
+
+### Handmatig — eindtest op de telefoon van Eric én die van Ilse
+
+Dit is de laatste stap: loop dit op **beide telefoons** na, met de echte Supabase-omgeving.
+
+**Installeren als app**
+- [ ] Site openen in Safari (iPhone) of Chrome (Android), "Zet op beginscherm" / "App installeren" gebruiken.
+- [ ] Icoon en naam zien er goed uit op het beginscherm.
+- [ ] Geopend vanaf het beginscherm voelt als een app (geen adresbalk).
+
+**Offline**
+- [ ] App eenmaal volledig doorlopen met internet (Dagen, Route, Budget, To-do, Meer-onderdelen geopend).
+- [ ] Vliegtuigstand aan; app sluiten en opnieuw openen: Dagen, Boekingen en Noodinfo tonen nog de laatste data,
+      met het offline-balkje.
+- [ ] Vliegtuigstand uit: balkje verdwijnt, nieuwe wijzigingen slaan weer op.
+
+**Printversie**
+- [ ] Meer → Printversie → Printen (of naar pdf); de uitdraai is leesbaar, zonder navigatie/knoppen.
+
+**Algehele eindtest (regressie van alle stappen, op beide telefoons)**
+- [ ] Inloggen met magic link; Overzicht toont countdown en notitie.
+- [ ] Dagen: navigeren, activiteit toevoegen, overnachting kiezen.
+- [ ] Route: kaart laadt, etappe bekijken.
+- [ ] Budget: uitgave toevoegen, categorieën kloppen.
+- [ ] To-do: taak toevoegen en afvinken.
+- [ ] Meer: elk onderdeel opent en werkt (Boekingen, Paklijst, Links, Documenten, Gezondheid, Reisdagboek, Noodinfo).
+- [ ] Een wijziging op de ene telefoon verschijnt zonder herladen op de andere (Realtime).
+- [ ] Layout en tekst zijn goed leesbaar op beide schermformaten.

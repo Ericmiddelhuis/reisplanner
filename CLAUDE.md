@@ -37,7 +37,14 @@ Gebruikers: precies twee (Eric en Ilse), op laptop én telefoon, evenveel. Beide
   - Configuratie (Supabase-URL en publishable key) in `js/config.js`.
 - **Kaart:** Leaflet met OpenStreetMap-tegels (vanaf stap 3).
 - **Afstanden en rijtijden:** OpenRouteService (vanaf stap 3). Resultaten opslaan in de database, niet steeds opnieuw opvragen.
-- **Offline:** service worker / PWA (stap 8), maar houd er vanaf het begin rekening mee: onderweg is er vaak geen bereik.
+- **Offline (stap 8):** `sw.js` cachet de app-schil (HTML/CSS/JS) zodat de app ook zonder bereik opent, als een PWA
+  (`manifest.json`, iconen in `icons/`). Reisdata wordt bij elke succesvolle ophaling in localStorage bewaard
+  (`js/db.js`); bij geen netwerk valt de app terug op die laatste versie, met een balkje (`js/offline.js`).
+  Werkt pas nadat de app minstens één keer online is geopend op dat toestel. In Playwright-tests registreert de
+  service worker zich bewust niet (`navigator.webdriver`-check in `app.js`), anders vangt hij de nagemaakte
+  netwerkverzoeken in de tests weg.
+- **Printversie (stap 8):** `#/meer/print`, met `css/print.css` (alleen actief bij printen) voor een papieren
+  back-up van dagplanning, boekingen, gezondheid en noodinfo.
 - **Tests:** Playwright voor end-to-end rooktests (alleen als devDependency; de app zelf heeft geen npm nodig), plus een handmatige testchecklist per stap in `docs/tests.md`.
 
 ## Mappenstructuur (voorstel)
@@ -155,3 +162,4 @@ Sla geen paspoort-, visum- of creditcardnummers op in de database. Alleen type, 
 - Stap 5: klaar
 - Stap 6: klaar
 - Stap 7: klaar
+- Stap 8: gebouwd en automatisch getest; handmatige eindtest op beide telefoons nog te doen (zie docs/tests.md)

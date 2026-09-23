@@ -102,3 +102,11 @@ async function start() {
 }
 
 start();
+
+// PWA: de app-schil cachen zodat de app ook zonder bereik opent (zie sw.js). Faalt dit onopvallend
+// (bijv. oude browser), dan werkt de app gewoon door zonder die offline-ondersteuning.
+// navigator.webdriver check: in geautomatiseerde tests (Playwright) registreren we de service worker niet,
+// anders vangt die de nagemaakte netwerkverzoeken in de tests weg vóórdat de test ze kan onderscheppen.
+if ('serviceWorker' in navigator && !navigator.webdriver) {
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
