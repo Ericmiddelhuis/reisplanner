@@ -318,8 +318,8 @@ Twee problemen tegelijk opgelost:
       leeg na een nieuwe render.
 
 ### Handmatig
-- [ ] Notitie opslaan, leegmaken en weer opslaan: verdwijnt echt, ook bij Ilse.
-- [ ] Bewerken-knop gebruiken om een bestaande notitie aan te passen.
+Niet meer van toepassing: dit tussenontwerp (één tekstveld, leegt na opslaan) is vlak hierna alweer vervangen
+door de lijst-opzet hieronder, op verzoek. De handmatige test is daar gedaan, niet voor dit tussenontwerp.
 
 ## Correctie: notities worden een lijst in plaats van één tekstveld
 
