@@ -6,7 +6,6 @@ import { nepSupabase, REIS } from './nepdb.js';
 async function metNepSessie(page) {
   await nepSupabase(page);   // reset REIS naar de standaardwaarden, dus pas daarna aanpassen
   REIS.startdatum = '2099-01-10';
-  REIS.notitie = 'Hallo Ilse';
 }
 
 test('zonder sessie zie je het inlogscherm', async ({ page }) => {
@@ -21,7 +20,6 @@ test('overzicht toont reisnaam en countdown', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Testreis' })).toBeVisible();
   await expect(page.locator('#countdown')).toHaveText(/^\d+$/);
-  await expect(page.locator('#notitie-tekst')).toHaveText('Hallo Ilse');
 });
 
 const schermen = ['Overzicht', 'Dagen', 'Route', 'Budget', 'To-do', 'Meer'];

@@ -1,5 +1,7 @@
-import { bewaarReis } from '../db.js';
-import { html } from '../util.js';
+// Overzicht: countdown en gedeelde notities (los van elkaar, elk met een datumstempel)
+import { lijst, voegToe, wijzig, verwijder } from '../db.js';
+import { maak, dagTijd } from '../util.js';
+import { opendialoog, veld } from '../dialogen.js';
 
 function dagenTot(datum) {
   if (!datum) return null;
@@ -7,70 +9,83 @@ function dagenTot(datum) {
   return Math.round((new Date(datum + 'T00:00:00') - nu) / 86400000);
 }
 
-export function toonOverzicht(el, staat) {
+export async function toonOverzicht(el, staat) {
   const reis = staat.reis;
+  const tripId = () => reis.id;
+  let notities = [];
+
+  el.replaceChildren(maak('h1', {}, reis.naam), maak('p', { class: 'gedempt' }, 'Laden…'));
+  try { notities = await lijst('notities', tripId()); } catch (e) {
+    el.replaceChildren(maak('h1', {}, reis.naam), maak('p', { class: 'melding fout' }, 'Laden mislukt: ' + e.message));
+    return;
+  }
+  if (staat.pad !== 'overzicht') return;
+
   const d = dagenTot(reis.startdatum);
-  const tekst = d === null ? 'Startdatum nog niet ingesteld'
+  const countdownTekst = d === null ? 'Startdatum nog niet ingesteld'
     : d > 0 ? `nog ${d} ${d === 1 ? 'dag' : 'dagen'} tot vertrek`
     : d === 0 ? 'Vandaag vertrekken jullie!' : 'De reis is begonnen';
-  el.innerHTML = html`
-    <h1 id="reisnaam"></h1>
-    <div class="kaart">
-      <div class="countdown" id="countdown"></div>
-      <p class="gedempt" id="countdown-tekst"></p>
-    </div>
-    <div class="kaart">
-      <h2>Gedeelde notitie</h2>
-      <p id="notitie-tekst"></p>
-      <button class="knop licht verborgen" id="bewerk-notitie" type="button">Bewerken</button>
-      <label for="notitie" id="notitie-label" style="margin-top:12px">Nieuwe notitie</label>
-      <textarea id="notitie" rows="3"></textarea>
-      <button class="knop" id="bewaar-notitie" type="button">Opslaan</button>
-      <p class="gedempt" id="notitie-status" role="status"></p>
-    </div>`;
-  el.querySelector('#reisnaam').textContent = reis.naam;
-  el.querySelector('#countdown').textContent = d !== null && d > 0 ? d : '';
-  el.querySelector('#countdown-tekst').textContent = tekst;
 
-  const tekstEl = el.querySelector('#notitie-tekst');
-  const veld = el.querySelector('#notitie');
-  const label = el.querySelector('#notitie-label');
-  const bewerkKnop = el.querySelector('#bewerk-notitie');
+  const notitiesKaart = maak('div', { class: 'kaart' });
+  el.replaceChildren(
+    maak('h1', {}, reis.naam),
+    maak('div', { class: 'kaart' },
+      maak('div', { class: 'countdown', id: 'countdown' }, d !== null && d > 0 ? String(d) : ''),
+      maak('p', { class: 'gedempt' }, countdownTekst)),
+    maak('h2', {}, 'Notities'), notitiesKaart);
 
-  // Het veld staat standaard leeg: alleen de opgeslagen notitie erboven toont wat er nu staat.
-  // Pas als je op "Bewerken" klikt, komt de huidige tekst in het veld, klaar om aan te passen.
-  function renderNotitie() {
-    tekstEl.textContent = reis.notitie || 'Nog geen notitie.';
-    bewerkKnop.classList.toggle('verborgen', !reis.notitie);
+  async function laden() { notities = await lijst('notities', tripId()); }
+
+  function render() {
+    const gesorteerd = [...notities].sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+    notitiesKaart.replaceChildren(
+      gesorteerd.length ? maak('ul', { class: 'lijst' }, gesorteerd.map((n) => maak('li', {},
+        maak('button', { type: 'button', class: 'activiteit', onclick: () => vraagNotitie(n) },
+          maak('strong', {}, n.tekst),
+          maak('span', { class: 'gedempt' }, dagTijd(n.created_at))))))
+        : maak('p', { class: 'gedempt' }, 'Nog geen notities.'),
+      maak('button', { type: 'button', class: 'knop licht', onclick: () => vraagNotitie(null) }, '+ Notitie toevoegen'));
   }
-  renderNotitie();
 
-  bewerkKnop.addEventListener('click', () => {
-    veld.value = reis.notitie || '';
-    label.textContent = 'Notitie bewerken';
-    veld.focus();
-  });
+  function vraagNotitie(notitie) {
+    const fout = maak('p', { class: 'melding fout verborgen', role: 'alert' });
+    const toonFout = (t) => { fout.textContent = t; fout.classList.remove('verborgen'); };
+    const tekst = maak('textarea', { id: 'nt-tekst', rows: '3', required: true }, notitie?.tekst || '');
 
-  el.querySelector('#bewaar-notitie').addEventListener('click', async () => {
-    const status = el.querySelector('#notitie-status');
-    const nieuweWaarde = veld.value.trim() || null;
-    try {
-      await bewaarReis(reis.id, { notitie: nieuweWaarde });
-      reis.notitie = nieuweWaarde;   // meteen lokaal bijwerken, niet wachten op de Realtime-echo
-      veld.value = '';
-      label.textContent = 'Nieuwe notitie';
-      renderNotitie();
-      status.textContent = 'Opgeslagen.';
-    } catch (e) { status.textContent = 'Opslaan mislukt: ' + e.message; }
-  });
-}
+    let dlg;
+    const form = maak('form', { method: 'dialog', onsubmit: async (ev) => {
+      ev.preventDefault();
+      const waarde = tekst.value.trim();
+      if (!waarde) return toonFout('Vul een notitie in.');
+      try {
+        if (notitie) { await wijzig('notities', notitie.id, { tekst: waarde }); notitie.tekst = waarde; }
+        else notities.push(await voegToe('notities', { trip_id: tripId(), tekst: waarde }));
+        dlg.close(); render();
+      } catch (e) { toonFout(e.message); }
+    } },
+      veld('nt-tekst', 'Notitie', tekst), fout,
+      maak('div', { class: 'knoppen' },
+        maak('button', { type: 'submit', class: 'knop' }, 'Opslaan'),
+        maak('button', { type: 'button', class: 'knop licht', onclick: () => dlg.close() }, 'Annuleren'),
+        notitie ? maak('button', { type: 'button', class: 'knop licht gevaar', onclick: async () => {
+          if (!confirm('Deze notitie verwijderen?')) return;
+          try {
+            await verwijder('notities', notitie.id); notities = notities.filter((x) => x.id !== notitie.id);
+            dlg.close(); render();
+          } catch (e) { toonFout(e.message); }
+        } }, 'Verwijderen') : null));
+    dlg = opendialoog(el, notitie ? 'Notitie bewerken' : 'Nieuwe notitie', form);
+  }
 
-// Realtime: de notitie van de ander verschijnt zonder herladen. Het invoerveld wordt met rust
-// gelaten (blijft leeg, of blijft staan wat je zelf aan het typen was) — alleen de weergave erboven
-// en de "Bewerken"-knop volgen de laatste stand.
-export function bijReisWijziging(el, reis) {
-  const tekst = el.querySelector('#notitie-tekst');
-  if (tekst) tekst.textContent = reis.notitie || 'Nog geen notitie.';
-  const bewerkKnop = el.querySelector('#bewerk-notitie');
-  if (bewerkKnop) bewerkKnop.classList.toggle('verborgen', !reis.notitie);
+  // Realtime: nieuwe of gewijzigde notities van de ander verschijnen vanzelf
+  let timer;
+  const verwerk = async () => {
+    if (staat.pad !== 'overzicht') return;
+    if (el.querySelector('dialog[open]')) { timer = setTimeout(verwerk, 1000); return; }
+    try { await laden(); } catch { return; }
+    render();
+  };
+  staat.opWijziging = () => { clearTimeout(timer); timer = setTimeout(verwerk, 300); };
+
+  render();
 }

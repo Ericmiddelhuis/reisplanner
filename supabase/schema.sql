@@ -199,6 +199,16 @@ create table if not exists packing_items (
   updated_by uuid references auth.users(id)
 );
 
+-- Gedeelde notities op Overzicht: een lijstje losse notities (niet één tekstveld), met datumstempel per notitie
+create table if not exists notities (
+  id uuid primary key default gen_random_uuid(),
+  trip_id uuid not null references trips(id) on delete cascade,
+  tekst text not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  updated_by uuid references auth.users(id)
+);
+
 -- Privacy: nooit paspoort-/visumnummers opslaan, alleen type, vervaldatum en status.
 create table if not exists documents (
   id uuid primary key default gen_random_uuid(),
@@ -228,7 +238,7 @@ do $$
 declare t text;
 begin
   foreach t in array array['trips','trip_members','places','days','bookings','activities',
-    'legs','expenses','budgetten','tasks','links','packing_items','documents'] loop
+    'legs','expenses','budgetten','tasks','links','packing_items','documents','notities'] loop
     execute format('drop trigger if exists audit on %I', t);
     execute format('create trigger audit before insert or update on %I
                     for each row execute function set_audit()', t);
@@ -246,7 +256,7 @@ do $$
 declare t text;
 begin
   foreach t in array array['trips','trip_members','places','days','bookings','activities',
-    'legs','expenses','budgetten','tasks','links','packing_items','documents'] loop
+    'legs','expenses','budgetten','tasks','links','packing_items','documents','notities'] loop
     begin
       execute format('alter publication supabase_realtime add table %I', t);
     exception when duplicate_object then null;  -- stond er al in

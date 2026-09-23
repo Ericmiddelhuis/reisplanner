@@ -24,6 +24,12 @@ export function dagTekst(iso) {
   return new Date(iso + 'T00:00:00').toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' });
 }
 
+// "23 sep, 14:32" — een compact datum-tijdstempel, bijv. voor notities en het offline-balkje
+export function dagTijd(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleString('nl-NL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+}
+
 // Datum van dag n, gerekend vanaf de startdatum (UTC om zomertijd-problemen te vermijden)
 export function datumVoor(startdatum, dagnummer) {
   if (!startdatum) return null;

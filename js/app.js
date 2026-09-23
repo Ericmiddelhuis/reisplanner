@@ -3,7 +3,7 @@ import { huidigeSessie, login, stuurWachtwoordLink, nieuwWachtwoord, claimUitnod
 import { laadReizen, maakReis, volgReis, volgTabellen } from './db.js';
 import { ROUTES, startRouter } from './router.js';
 import { iconen } from './icons.js';
-import { toonOverzicht, bijReisWijziging } from './schermen/overzicht.js';
+import { toonOverzicht } from './schermen/overzicht.js';
 import { toonDagen } from './schermen/dagen.js';
 import { toonRoute } from './schermen/route.js';
 import { toonBudget } from './schermen/budget.js';
@@ -143,12 +143,9 @@ async function start() {
   if (!reizen.length) return toonEersteReis();
   staat.reis = reizen[0];
   bouwApp();
-  volgReis(staat.reis.id, (nieuw) => {
-    staat.reis = nieuw;
-    if (staat.pad === 'overzicht') bijReisWijziging(root.querySelector('#hoofd'), nieuw);
-  });
+  volgReis(staat.reis.id, (nieuw) => { staat.reis = nieuw; });
   volgTabellen(['days', 'places', 'activities', 'bookings', 'legs', 'expenses', 'budgetten', 'tasks',
-    'links', 'packing_items', 'documents'], () => staat.opWijziging?.());
+    'links', 'packing_items', 'documents', 'notities'], () => staat.opWijziging?.());
   startRouter(toonScherm);
 }
 

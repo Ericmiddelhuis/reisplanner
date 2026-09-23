@@ -12,7 +12,7 @@ export const REIS = { ...BASIS_REIS };
 export async function nepSupabase(page, begin = {}) {
   Object.assign(REIS, BASIS_REIS, { koersen: { ...BASIS_REIS.koersen } });
   const db = { days: [], places: [], activities: [], bookings: [], legs: [], expenses: [], budgetten: [], tasks: [],
-    links: [], packing_items: [], documents: [], trip_members: [], ...begin };
+    links: [], packing_items: [], documents: [], trip_members: [], notities: [], ...begin };
   const sessie = { access_token: 'x', refresh_token: 'x', token_type: 'bearer', expires_in: 3600,
     expires_at: Math.floor(Date.now() / 1000) + 3600,
     user: { id: '22222222-2222-2222-2222-222222222222', email: 'test@example.com', aud: 'authenticated' } };

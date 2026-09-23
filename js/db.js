@@ -2,6 +2,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
 import { toonOfflineBalk, verbergOfflineBalk } from './offline.js';
+import { dagTijd } from './util.js';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -19,8 +20,6 @@ function schrijfCache(sleutel, data) {
   try { localStorage.setItem(sleutel, JSON.stringify({ data, bijgewerkt: new Date().toISOString() })); }
   catch { /* localStorage kan vol of uitgeschakeld zijn: dan geen offline-cache, verder geen probleem */ }
 }
-const dagTijd = (iso) => new Date(iso).toLocaleString('nl-NL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-
 // Supabase-js probeert bij een netwerkfout intern een paar keer opnieuw (~7 seconden) voor het opgeeft.
 // Dat is te traag voor onderweg: na deze tijdslimiet behandelen we het alvast als "geen netwerk".
 // De oorspronkelijke aanvraag loopt op de achtergrond gewoon door; het resultaat ervan wordt dan genegeerd.
@@ -51,7 +50,7 @@ async function metCache(sleutel, ophalen) {
 
 // Tabellen die bij export/import horen, in volgorde van afhankelijkheid
 const TABELLEN = ['places', 'days', 'bookings', 'activities', 'legs', 'expenses', 'budgetten',
-  'tasks', 'links', 'packing_items', 'documents'];
+  'tasks', 'links', 'packing_items', 'documents', 'notities'];
 
 export async function laadReizen() {
   return metCache('reisplanner:reizen', () => supabase.from('trips').select('*').order('created_at'));

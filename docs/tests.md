@@ -320,3 +320,24 @@ Twee problemen tegelijk opgelost:
 ### Handmatig
 - [ ] Notitie opslaan, leegmaken en weer opslaan: verdwijnt echt, ook bij Ilse.
 - [ ] Bewerken-knop gebruiken om een bestaande notitie aan te passen.
+
+## Correctie: notities worden een lijst in plaats van één tekstveld
+
+Op verzoek: gedeelde notities op Overzicht zijn nu losse, bewaarde items (nieuwe tabel `notities`) in plaats van
+één tekstveld op de reis. Nieuwe notities toevoegen laat bestaande gewoon staan; "Bewerken" past alleen die ene
+notitie aan. Elke notitie toont een datum- en tijdstempel (`dagTijd` in `js/util.js`).
+
+Eenmalig `supabase/stap9.sql` uitvoeren in de Supabase SQL-editor (nieuwe tabel `notities`, met RLS en Realtime).
+Het oude tekstveld `trips.notitie` blijft ongebruikt in de database staan; niet verwijderd.
+
+### Automatisch (Playwright, geslaagd; `tests/overzicht.spec.js`)
+- [x] Nieuwe notitie toevoegen met datumstempel; bestaande notitie blijft staan.
+- [x] Bewerken past alleen die ene notitie aan; de andere blijft ongewijzigd.
+- [x] Notitie verwijderen.
+- [x] Een lege notitie kan niet worden opgeslagen.
+
+### Handmatig (echte Supabase)
+- [ ] `stap9.sql` foutloos uitgevoerd.
+- [ ] Notitie toevoegen, een tweede toevoegen; beide blijven staan met een datumstempel.
+- [ ] Een bestaande notitie bewerken via de knop erop.
+- [ ] Wijziging van Eric (nieuwe of bewerkte notitie) verschijnt zonder herladen bij Ilse.

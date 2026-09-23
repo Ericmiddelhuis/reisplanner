@@ -69,7 +69,7 @@ do $$
 declare t text;
 begin
   foreach t in array array['places','days','bookings','activities','legs','expenses','budgetten',
-    'tasks','links','packing_items','documents'] loop
+    'tasks','links','packing_items','documents','notities'] loop
     execute format('alter table %I enable row level security', t);
     execute format('drop policy if exists %I on %I', t || '_leden', t);
     execute format('create policy %I on %I for all to authenticated
