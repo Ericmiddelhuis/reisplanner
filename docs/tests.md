@@ -301,3 +301,22 @@ wachtwoord in. Daarna gewoon inloggen met e-mail + wachtwoord, ook op de geïnst
 - [x] Inloggen met wachtwoord werkt rechtstreeks in de geïnstalleerde app op het beginscherm (geen omweg via Mail meer).
 - [x] Een verkeerd wachtwoord geeft een begrijpelijke foutmelding.
 - [x] Wachtwoord vergeten opnieuw aanvragen werkt.
+
+## Correctie: gedeelde notitie op Overzicht
+
+Twee problemen tegelijk opgelost:
+1. Een lege notitie opslaan (het veld leegmaken en op Opslaan drukken) leek niet te blijven staan: de lokale
+   status werd na het opslaan niet bijgewerkt, dus tot de Realtime-echo binnenkwam leek de oude tekst terug te komen.
+2. Nieuwe werkwijze op verzoek: het invoerveld staat voortaan standaard leeg. Opslaan toont de tekst erboven en
+   leegt het veld weer. Een "Bewerken"-knop (zichtbaar zodra er een notitie is) laadt de huidige tekst terug in
+   het veld om aan te passen; zonder die knop te gebruiken blijft de bestaande notitie met rust.
+
+### Automatisch (Playwright, geslaagd; `tests/overzicht.spec.js`)
+- [x] Nieuwe notitie opslaan leegt het veld en toont de tekst erboven; de "Bewerken"-knop verschijnt.
+- [x] Bewerken laadt de huidige notitie in het veld; opslaan overschrijft en leegt het veld weer.
+- [x] Notitie leegmaken en opslaan verwijdert hem echt (ook lokaal, zonder op Realtime te hoeven wachten) en blijft
+      leeg na een nieuwe render.
+
+### Handmatig
+- [ ] Notitie opslaan, leegmaken en weer opslaan: verdwijnt echt, ook bij Ilse.
+- [ ] Bewerken-knop gebruiken om een bestaande notitie aan te passen.

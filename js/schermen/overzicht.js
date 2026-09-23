@@ -22,7 +22,8 @@ export function toonOverzicht(el, staat) {
     <div class="kaart">
       <h2>Gedeelde notitie</h2>
       <p id="notitie-tekst"></p>
-      <label for="notitie">Nieuwe notitie</label>
+      <button class="knop licht verborgen" id="bewerk-notitie" type="button">Bewerken</button>
+      <label for="notitie" id="notitie-label" style="margin-top:12px">Nieuwe notitie</label>
       <textarea id="notitie" rows="3"></textarea>
       <button class="knop" id="bewaar-notitie" type="button">Opslaan</button>
       <p class="gedempt" id="notitie-status" role="status"></p>
@@ -30,21 +31,46 @@ export function toonOverzicht(el, staat) {
   el.querySelector('#reisnaam').textContent = reis.naam;
   el.querySelector('#countdown').textContent = d !== null && d > 0 ? d : '';
   el.querySelector('#countdown-tekst').textContent = tekst;
-  el.querySelector('#notitie').value = reis.notitie || '';
-  el.querySelector('#notitie-tekst').textContent = reis.notitie || 'Nog geen notitie.';
+
+  const tekstEl = el.querySelector('#notitie-tekst');
+  const veld = el.querySelector('#notitie');
+  const label = el.querySelector('#notitie-label');
+  const bewerkKnop = el.querySelector('#bewerk-notitie');
+
+  // Het veld staat standaard leeg: alleen de opgeslagen notitie erboven toont wat er nu staat.
+  // Pas als je op "Bewerken" klikt, komt de huidige tekst in het veld, klaar om aan te passen.
+  function renderNotitie() {
+    tekstEl.textContent = reis.notitie || 'Nog geen notitie.';
+    bewerkKnop.classList.toggle('verborgen', !reis.notitie);
+  }
+  renderNotitie();
+
+  bewerkKnop.addEventListener('click', () => {
+    veld.value = reis.notitie || '';
+    label.textContent = 'Notitie bewerken';
+    veld.focus();
+  });
+
   el.querySelector('#bewaar-notitie').addEventListener('click', async () => {
     const status = el.querySelector('#notitie-status');
+    const nieuweWaarde = veld.value.trim() || null;
     try {
-      await bewaarReis(reis.id, { notitie: el.querySelector('#notitie').value });
+      await bewaarReis(reis.id, { notitie: nieuweWaarde });
+      reis.notitie = nieuweWaarde;   // meteen lokaal bijwerken, niet wachten op de Realtime-echo
+      veld.value = '';
+      label.textContent = 'Nieuwe notitie';
+      renderNotitie();
       status.textContent = 'Opgeslagen.';
     } catch (e) { status.textContent = 'Opslaan mislukt: ' + e.message; }
   });
 }
 
-// Realtime: de notitie van de ander verschijnt zonder herladen
+// Realtime: de notitie van de ander verschijnt zonder herladen. Het invoerveld wordt met rust
+// gelaten (blijft leeg, of blijft staan wat je zelf aan het typen was) — alleen de weergave erboven
+// en de "Bewerken"-knop volgen de laatste stand.
 export function bijReisWijziging(el, reis) {
   const tekst = el.querySelector('#notitie-tekst');
   if (tekst) tekst.textContent = reis.notitie || 'Nog geen notitie.';
-  const veld = el.querySelector('#notitie');
-  if (veld && document.activeElement !== veld) veld.value = reis.notitie || '';
+  const bewerkKnop = el.querySelector('#bewerk-notitie');
+  if (bewerkKnop) bewerkKnop.classList.toggle('verborgen', !reis.notitie);
 }
