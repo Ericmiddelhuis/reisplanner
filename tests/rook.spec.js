@@ -12,7 +12,8 @@ async function metNepSessie(page) {
 test('zonder sessie zie je het inlogscherm', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: /Reisplanner/ })).toBeVisible();
-  await expect(page.getByLabel('E-mailadres')).toBeVisible();
+  await expect(page.getByLabel('E-mailadres').first()).toBeVisible();
+  await expect(page.getByLabel('Wachtwoord', { exact: true })).toBeVisible();
 });
 
 test('overzicht toont reisnaam en countdown', async ({ page }) => {

@@ -14,7 +14,7 @@ input, textarea, select {
 .melding { padding: 10px 14px; border-radius: 12px; background: var(--groen-licht); margin-bottom: 12px; }
 .melding.fout { background: var(--oker-licht); color: var(--oker-tekst); }
 .countdown { font: 600 3rem var(--font-kop); color: var(--groen); line-height: 1; }
-.login { max-width: 420px; margin: 12vh auto; padding: 0 16px; }
+.login { max-width: 420px; margin: 6vh auto 40px; padding: 0 16px; }
 .lijst { list-style: none; padding: 0; margin: 0 0 12px; }
 .lijst li { padding: 8px 0; border-bottom: 1px solid var(--rand); }
 

@@ -31,7 +31,10 @@ Gebruikers: precies twee (Eric en Ilse), op laptop én telefoon, evenveel. Beide
 - **Frontend:** plain HTML, CSS en JavaScript (ES modules), zonder build-stap.
 - **Hosting:** GitHub Pages (statische bestanden uit de repo).
 - **Data, login en synchronisatie:** Supabase (Postgres + Auth + Realtime), via `@supabase/supabase-js` uit een CDN.
-  - Inloggen met e-mail via magic link (geen wachtwoorden).
+  - Inloggen met e-mail en wachtwoord. Was eerst een magic link, maar omgezet in stap 8: een link in Mail opent
+    nooit de geïnstalleerde PWA (en op iPhone soms zelfs een andere opslag dan de browser). Wachtwoord instellen/
+    resetten gaat nog wel via een linkje per mail (`stuurWachtwoordLink` in `js/auth.js`), maar dat is nu
+    uitzondering in plaats van de normale inlogroute.
   - Row Level Security op alle tabellen: alleen leden van een reis zien en wijzigen die reis.
   - De publishable/anon key mag in de frontend staan (RLS beschermt de data). Nooit de service_role key in de repo.
   - Configuratie (Supabase-URL en publishable key) in `js/config.js`.
@@ -141,7 +144,7 @@ Sla geen paspoort-, visum- of creditcardnummers op in de database. Alleen type, 
 ## Stap 1 – acceptatiecriteria
 
 - [x] `supabase/schema.sql` en `supabase/policies.sql` maken alle tabellen met RLS aan; uitvoerbaar in de Supabase SQL-editor.
-- [x] Inloggen met magic link werkt, lokaal en op GitHub Pages. Uitloggen werkt.
+- [x] Inloggen met magic link werkt, lokaal en op GitHub Pages. Uitloggen werkt. (In stap 8 omgezet naar e-mail + wachtwoord, zie Stack en beslissingen.)
 - [x] Na eerste login: een reis aanmaken en een tweede persoon uitnodigen via e-mail.
 - [x] Navigatie tussen de vijf onderdelen werkt (hash-router), met lege schermen die al de juiste kop en layout hebben.
 - [x] Telefoonlayout met onderste navigatiebalk, laptoplayout (vanaf ± 900px) met zijbalk.
@@ -162,4 +165,4 @@ Sla geen paspoort-, visum- of creditcardnummers op in de database. Alleen type, 
 - Stap 5: klaar
 - Stap 6: klaar
 - Stap 7: klaar
-- Stap 8: gebouwd en automatisch getest; handmatige eindtest op beide telefoons nog te doen (zie docs/tests.md)
+- Stap 8: gebouwd en automatisch getest; handmatige eindtest op beide telefoons nog te doen, inclusief wachtwoord instellen (zie docs/tests.md)

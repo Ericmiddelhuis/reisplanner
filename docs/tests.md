@@ -274,3 +274,30 @@ Dit is de laatste stap: loop dit op **beide telefoons** na, met de echte Supabas
 - [ ] Meer: elk onderdeel opent en werkt (Boekingen, Paklijst, Links, Documenten, Gezondheid, Reisdagboek, Noodinfo).
 - [ ] Een wijziging op de ene telefoon verschijnt zonder herladen op de andere (Realtime).
 - [ ] Layout en tekst zijn goed leesbaar op beide schermformaten.
+
+## Stap 8, correctie: inloggen met wachtwoord in plaats van magic link
+
+Reden: een link uit Mail opent nooit de geïnstalleerde PWA op het beginscherm, en op iPhone kan die zelfs een
+andere opslag gebruiken dan de browser. Daardoor moest je na de installatie steeds opnieuw inloggen. Met een
+wachtwoord log je rechtstreeks in de app zelf in, zonder omweg via Mail.
+
+Geen Supabase-instellingen nodig: wachtwoord-inloggen zit al bij dezelfde "Email"-provider als de magic link.
+
+**Voor Eric en Ilse:** jullie bestaande accounts hebben nog geen wachtwoord. Ga naar het inlogscherm, gebruik
+"Nog geen wachtwoord, of vergeten?" met je eigen e-mailadres, en stel via de mail die je krijgt eenmalig een
+wachtwoord in. Daarna gewoon inloggen met e-mail + wachtwoord, ook op de geïnstalleerde app.
+
+### Automatisch (Playwright, geslaagd; `tests/auth.spec.js`)
+- [x] Inlogscherm toont e-mail + wachtwoord, met een aparte sectie om een wachtwoord in te stellen/resetten.
+- [x] Inloggen met een verkeerd wachtwoord toont de foutmelding van Supabase.
+- [x] Een wachtwoordlink aanvragen toont een bevestiging.
+- [x] Nieuw wachtwoord instellen via de link: wachtwoorden die niet overeenkomen geven een foutmelding; bij een
+      geslaagde match ga je gewoon door naar de reis.
+- [x] Telefoon: geen horizontaal scrollen op het inlogscherm.
+
+### Handmatig (echte Supabase, op Pages en telefoon)
+- [ ] Eric stelt een wachtwoord in via "Nog geen wachtwoord, of vergeten?" en logt daarmee in.
+- [ ] Ilse doet hetzelfde.
+- [ ] Inloggen met wachtwoord werkt rechtstreeks in de geïnstalleerde app op het beginscherm (geen omweg via Mail meer).
+- [ ] Een verkeerd wachtwoord geeft een begrijpelijke foutmelding.
+- [ ] Wachtwoord vergeten opnieuw aanvragen werkt.
